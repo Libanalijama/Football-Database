@@ -1,0 +1,729 @@
+{
+  "verifiedAt": "2026-11-12T23:35:39.506Z",
+  "method": "Direct finished ESPN adapter requests, no runtime fixture fallback",
+  "paidProviderKeysPresent": false,
+  "results": [
+    {
+      "competition": "eng.1",
+      "season": 2026,
+      "discoveredSeasons": [
+        2026,
+        2025,
+        2024,
+        2023,
+        2022,
+        2021,
+        2020,
+        2019,
+        2018,
+        2017,
+        2016,
+        2015,
+        2014,
+        2013,
+        2012,
+        2011,
+        2010,
+        2009,
+        2008,
+        2007,
+        2006,
+        2005,
+        2004,
+        2003,
+        2002
+      ],
+      "teamCount": 20,
+      "standingsCount": 20,
+      "leaderCount": 100,
+      "team": {
+        "id": "359",
+        "name": "Arsenal",
+        "squadCount": 31,
+        "fixtureResultCount": 38,
+        "provenance": {
+          "provider": "espn",
+          "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/teams/359/roster?season=2026",
+          "retrievedAt": "2026-11-12T23:35:35.451Z",
+          "competition": "eng.1",
+          "season": 2026,
+          "scope": "current-squad",
+          "teamId": "359"
+        }
+      },
+      "player": {
+        "id": "280555",
+        "name": "Bukayo Saka",
+        "portrait": null,
+        "statistics": [
+          {
+            "key": "foulsCommitted",
+            "label": "Fouls Committed",
+            "value": 5,
+            "displayValue": "5",
+            "unit": "count",
+            "provenance": {
+              "provider": "espn",
+              "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/teams/359/roster?season=2026",
+              "retrievedAt": "2026-11-12T23:35:35.451Z",
+              "competition": "eng.1",
+              "season": 2026,
+              "scope": "competition-season",
+              "teamId": "359"
+            }
+          },
+          {
+            "key": "foulsSuffered",
+            "label": "Fouls Suffered",
+            "value": 21,
+            "displayValue": "21",
+            "unit": "count",
+            "provenance": {
+              "provider": "espn",
+              "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/teams/359/roster?season=2026",
+              "retrievedAt": "2026-11-12T23:35:35.451Z",
+              "competition": "eng.1",
+              "season": 2026,
+              "scope": "competition-season",
+              "teamId": "359"
+            }
+          },
+          {
+            "key": "redCards",
+            "label": "Red Cards",
+            "value": 0,
+            "displayValue": "0",
+            "unit": "count",
+            "provenance": {
+              "provider": "espn",
+              "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/teams/359/roster?season=2026",
+              "retrievedAt": "2026-11-12T23:35:35.451Z",
+              "competition": "eng.1",
+              "season": 2026,
+              "scope": "competition-season",
+              "teamId": "359"
+            }
+          },
+          {
+            "key": "yellowCards",
+            "label": "Yellow Cards",
+            "value": 0,
+            "displayValue": "0",
+            "unit": "count",
+            "provenance": {
+              "provider": "espn",
+              "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/teams/359/roster?season=2026",
+              "retrievedAt": "2026-11-12T23:35:35.451Z",
+              "competition": "eng.1",
+              "season": 2026,
+              "scope": "competition-season",
+              "teamId": "359"
+            }
+          },
+          {
+            "key": "ownGoals",
+            "label": "Own Goals",
+            "value": 0,
+            "displayValue": "0",
+            "unit": "count",
+            "provenance": {
+              "provider": "espn",
+              "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/teams/359/roster?season=2026",
+              "retrievedAt": "2026-11-12T23:35:35.451Z",
+              "competition": "eng.1",
+              "season": 2026,
+              "scope": "competition-season",
+              "teamId": "359"
+            }
+          },
+          {
+            "key": "appearances",
+            "label": "Appearances",
+            "value": 7,
+            "displayValue": "7",
+            "unit": "count",
+            "provenance": {
+              "provider": "espn",
+              "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/teams/359/roster?season=2026",
+              "retrievedAt": "2026-11-12T23:35:35.451Z",
+              "competition": "eng.1",
+              "season": 2026,
+              "scope": "competition-season",
+              "teamId": "359"
+            }
+          },
+          {
+            "key": "subIns",
+            "label": "Substitute Appearances",
+            "value": 0,
+            "displayValue": "0",
+            "unit": "count",
+            "provenance": {
+              "provider": "espn",
+              "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/teams/359/roster?season=2026",
+              "retrievedAt": "2026-11-12T23:35:35.451Z",
+              "competition": "eng.1",
+              "season": 2026,
+              "scope": "competition-season",
+              "teamId": "359"
+            }
+          },
+          {
+            "key": "goalAssists",
+            "label": "Assists",
+            "value": 0,
+            "displayValue": "0",
+            "unit": "count",
+            "provenance": {
+              "provider": "espn",
+              "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/teams/359/roster?season=2026",
+              "retrievedAt": "2026-11-12T23:35:35.451Z",
+              "competition": "eng.1",
+              "season": 2026,
+              "scope": "competition-season",
+              "teamId": "359"
+            }
+          },
+          {
+            "key": "offsides",
+            "label": "Offsides",
+            "value": 7,
+            "displayValue": "7",
+            "unit": "count",
+            "provenance": {
+              "provider": "espn",
+              "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/teams/359/roster?season=2026",
+              "retrievedAt": "2026-11-12T23:35:35.451Z",
+              "competition": "eng.1",
+              "season": 2026,
+              "scope": "competition-season",
+              "teamId": "359"
+            }
+          },
+          {
+            "key": "shotsOnTarget",
+            "label": "Shots On Goal",
+            "value": 10,
+            "displayValue": "10",
+            "unit": "count",
+            "provenance": {
+              "provider": "espn",
+              "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/teams/359/roster?season=2026",
+              "retrievedAt": "2026-11-12T23:35:35.451Z",
+              "competition": "eng.1",
+              "season": 2026,
+              "scope": "competition-season",
+              "teamId": "359"
+            }
+          },
+          {
+            "key": "totalShots",
+            "label": "Shots",
+            "value": 17,
+            "displayValue": "17",
+            "unit": "count",
+            "provenance": {
+              "provider": "espn",
+              "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/teams/359/roster?season=2026",
+              "retrievedAt": "2026-11-12T23:35:35.451Z",
+              "competition": "eng.1",
+              "season": 2026,
+              "scope": "competition-season",
+              "teamId": "359"
+            }
+          },
+          {
+            "key": "totalGoals",
+            "label": "Total Goals",
+            "value": 3,
+            "displayValue": "3",
+            "unit": "count",
+            "provenance": {
+              "provider": "espn",
+              "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/teams/359/roster?season=2026",
+              "retrievedAt": "2026-11-12T23:35:35.451Z",
+              "competition": "eng.1",
+              "season": 2026,
+              "scope": "competition-season",
+              "teamId": "359"
+            }
+          },
+          {
+            "key": "saves",
+            "label": "Saves",
+            "value": 0,
+            "displayValue": "0",
+            "unit": "count",
+            "provenance": {
+              "provider": "espn",
+              "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/teams/359/roster?season=2026",
+              "retrievedAt": "2026-11-12T23:35:35.451Z",
+              "competition": "eng.1",
+              "season": 2026,
+              "scope": "competition-season",
+              "teamId": "359"
+            }
+          },
+          {
+            "key": "shotsFaced",
+            "label": "Shots Faced",
+            "value": 0,
+            "displayValue": "0",
+            "unit": "count",
+            "provenance": {
+              "provider": "espn",
+              "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/teams/359/roster?season=2026",
+              "retrievedAt": "2026-11-12T23:35:35.451Z",
+              "competition": "eng.1",
+              "season": 2026,
+              "scope": "competition-season",
+              "teamId": "359"
+            }
+          },
+          {
+            "key": "goalsConceded",
+            "label": "Goals Against",
+            "value": 5,
+            "displayValue": "5",
+            "unit": "count",
+            "provenance": {
+              "provider": "espn",
+              "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/teams/359/roster?season=2026",
+              "retrievedAt": "2026-11-12T23:35:35.451Z",
+              "competition": "eng.1",
+              "season": 2026,
+              "scope": "competition-season",
+              "teamId": "359"
+            }
+          }
+        ],
+        "provenance": {
+          "provider": "espn",
+          "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/teams/359/roster?season=2026",
+          "retrievedAt": "2026-11-12T23:35:35.451Z",
+          "competition": "eng.1",
+          "season": 2026,
+          "scope": "competition-season",
+          "teamId": "359"
+        }
+      },
+      "match": {
+        "id": "401879244",
+        "name": "Brighton & Hove Albion v Brentford",
+        "homeScore": 2,
+        "awayScore": 0,
+        "eventCount": 33,
+        "lineups": [
+          {
+            "teamId": "331",
+            "formation": "4-2-3-1",
+            "starters": 11,
+            "bench": 9,
+            "statisticsCount": 280
+          },
+          {
+            "teamId": "337",
+            "formation": "4-4-2",
+            "starters": 11,
+            "bench": 9,
+            "statisticsCount": 280
+          }
+        ],
+        "capabilities": {
+          "details": {
+            "available": true
+          },
+          "events": {
+            "available": true
+          },
+          "lineups": {
+            "available": true
+          },
+          "bench": {
+            "available": true
+          },
+          "formations": {
+            "available": true
+          },
+          "teamStatistics": {
+            "available": true
+          },
+          "playerMatchStatistics": {
+            "available": true
+          }
+        },
+        "provenance": {
+          "provider": "espn",
+          "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/summary?event=401879244",
+          "retrievedAt": "2026-11-12T23:35:36.868Z",
+          "competition": "eng.1",
+          "season": 2026,
+          "scope": "match"
+        }
+      },
+      "boundedSearchCount": 1,
+      "elapsedMs": 3117
+    },
+    {
+      "competition": "esp.1",
+      "season": 2026,
+      "discoveredSeasons": [
+        2026,
+        2025,
+        2024,
+        2023,
+        2022,
+        2021,
+        2020,
+        2019,
+        2018,
+        2017,
+        2016,
+        2015,
+        2014,
+        2013,
+        2012,
+        2011,
+        2010,
+        2009,
+        2008,
+        2007,
+        2006,
+        2005,
+        2004,
+        2003,
+        2002
+      ],
+      "teamCount": 20,
+      "standingsCount": 20,
+      "leaderCount": 100,
+      "team": {
+        "id": "86",
+        "name": "Real Madrid",
+        "squadCount": 36,
+        "fixtureResultCount": 38,
+        "provenance": {
+          "provider": "espn",
+          "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/soccer/esp.1/teams/86/roster?season=2026",
+          "retrievedAt": "2026-11-12T23:35:38.178Z",
+          "competition": "esp.1",
+          "season": 2026,
+          "scope": "current-squad",
+          "teamId": "86"
+        }
+      },
+      "player": {
+        "id": "252107",
+        "name": "Vinícius Júnior",
+        "portrait": null,
+        "statistics": [
+          {
+            "key": "foulsCommitted",
+            "label": "Fouls Committed",
+            "value": 7,
+            "displayValue": "7",
+            "unit": "count",
+            "provenance": {
+              "provider": "espn",
+              "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/soccer/esp.1/teams/86/roster?season=2026",
+              "retrievedAt": "2026-11-12T23:35:38.178Z",
+              "competition": "esp.1",
+              "season": 2026,
+              "scope": "competition-season",
+              "teamId": "86"
+            }
+          },
+          {
+            "key": "foulsSuffered",
+            "label": "Fouls Suffered",
+            "value": 23,
+            "displayValue": "23",
+            "unit": "count",
+            "provenance": {
+              "provider": "espn",
+              "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/soccer/esp.1/teams/86/roster?season=2026",
+              "retrievedAt": "2026-11-12T23:35:38.178Z",
+              "competition": "esp.1",
+              "season": 2026,
+              "scope": "competition-season",
+              "teamId": "86"
+            }
+          },
+          {
+            "key": "redCards",
+            "label": "Red Cards",
+            "value": 1,
+            "displayValue": "1",
+            "unit": "count",
+            "provenance": {
+              "provider": "espn",
+              "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/soccer/esp.1/teams/86/roster?season=2026",
+              "retrievedAt": "2026-11-12T23:35:38.178Z",
+              "competition": "esp.1",
+              "season": 2026,
+              "scope": "competition-season",
+              "teamId": "86"
+            }
+          },
+          {
+            "key": "yellowCards",
+            "label": "Yellow Cards",
+            "value": 2,
+            "displayValue": "2",
+            "unit": "count",
+            "provenance": {
+              "provider": "espn",
+              "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/soccer/esp.1/teams/86/roster?season=2026",
+              "retrievedAt": "2026-11-12T23:35:38.178Z",
+              "competition": "esp.1",
+              "season": 2026,
+              "scope": "competition-season",
+              "teamId": "86"
+            }
+          },
+          {
+            "key": "ownGoals",
+            "label": "Own Goals",
+            "value": 0,
+            "displayValue": "0",
+            "unit": "count",
+            "provenance": {
+              "provider": "espn",
+              "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/soccer/esp.1/teams/86/roster?season=2026",
+              "retrievedAt": "2026-11-12T23:35:38.178Z",
+              "competition": "esp.1",
+              "season": 2026,
+              "scope": "competition-season",
+              "teamId": "86"
+            }
+          },
+          {
+            "key": "appearances",
+            "label": "Appearances",
+            "value": 8,
+            "displayValue": "8",
+            "unit": "count",
+            "provenance": {
+              "provider": "espn",
+              "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/soccer/esp.1/teams/86/roster?season=2026",
+              "retrievedAt": "2026-11-12T23:35:38.178Z",
+              "competition": "esp.1",
+              "season": 2026,
+              "scope": "competition-season",
+              "teamId": "86"
+            }
+          },
+          {
+            "key": "subIns",
+            "label": "Substitute Appearances",
+            "value": 1,
+            "displayValue": "1",
+            "unit": "count",
+            "provenance": {
+              "provider": "espn",
+              "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/soccer/esp.1/teams/86/roster?season=2026",
+              "retrievedAt": "2026-11-12T23:35:38.178Z",
+              "competition": "esp.1",
+              "season": 2026,
+              "scope": "competition-season",
+              "teamId": "86"
+            }
+          },
+          {
+            "key": "goalAssists",
+            "label": "Assists",
+            "value": 3,
+            "displayValue": "3",
+            "unit": "count",
+            "provenance": {
+              "provider": "espn",
+              "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/soccer/esp.1/teams/86/roster?season=2026",
+              "retrievedAt": "2026-11-12T23:35:38.178Z",
+              "competition": "esp.1",
+              "season": 2026,
+              "scope": "competition-season",
+              "teamId": "86"
+            }
+          },
+          {
+            "key": "offsides",
+            "label": "Offsides",
+            "value": 2,
+            "displayValue": "2",
+            "unit": "count",
+            "provenance": {
+              "provider": "espn",
+              "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/soccer/esp.1/teams/86/roster?season=2026",
+              "retrievedAt": "2026-11-12T23:35:38.178Z",
+              "competition": "esp.1",
+              "season": 2026,
+              "scope": "competition-season",
+              "teamId": "86"
+            }
+          },
+          {
+            "key": "shotsOnTarget",
+            "label": "Shots On Goal",
+            "value": 7,
+            "displayValue": "7",
+            "unit": "count",
+            "provenance": {
+              "provider": "espn",
+              "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/soccer/esp.1/teams/86/roster?season=2026",
+              "retrievedAt": "2026-11-12T23:35:38.178Z",
+              "competition": "esp.1",
+              "season": 2026,
+              "scope": "competition-season",
+              "teamId": "86"
+            }
+          },
+          {
+            "key": "totalShots",
+            "label": "Shots",
+            "value": 23,
+            "displayValue": "23",
+            "unit": "count",
+            "provenance": {
+              "provider": "espn",
+              "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/soccer/esp.1/teams/86/roster?season=2026",
+              "retrievedAt": "2026-11-12T23:35:38.178Z",
+              "competition": "esp.1",
+              "season": 2026,
+              "scope": "competition-season",
+              "teamId": "86"
+            }
+          },
+          {
+            "key": "totalGoals",
+            "label": "Total Goals",
+            "value": 1,
+            "displayValue": "1",
+            "unit": "count",
+            "provenance": {
+              "provider": "espn",
+              "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/soccer/esp.1/teams/86/roster?season=2026",
+              "retrievedAt": "2026-11-12T23:35:38.178Z",
+              "competition": "esp.1",
+              "season": 2026,
+              "scope": "competition-season",
+              "teamId": "86"
+            }
+          },
+          {
+            "key": "saves",
+            "label": "Saves",
+            "value": 0,
+            "displayValue": "0",
+            "unit": "count",
+            "provenance": {
+              "provider": "espn",
+              "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/soccer/esp.1/teams/86/roster?season=2026",
+              "retrievedAt": "2026-11-12T23:35:38.178Z",
+              "competition": "esp.1",
+              "season": 2026,
+              "scope": "competition-season",
+              "teamId": "86"
+            }
+          },
+          {
+            "key": "shotsFaced",
+            "label": "Shots Faced",
+            "value": 0,
+            "displayValue": "0",
+            "unit": "count",
+            "provenance": {
+              "provider": "espn",
+              "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/soccer/esp.1/teams/86/roster?season=2026",
+              "retrievedAt": "2026-11-12T23:35:38.178Z",
+              "competition": "esp.1",
+              "season": 2026,
+              "scope": "competition-season",
+              "teamId": "86"
+            }
+          },
+          {
+            "key": "goalsConceded",
+            "label": "Goals Against",
+            "value": 5,
+            "displayValue": "5",
+            "unit": "count",
+            "provenance": {
+              "provider": "espn",
+              "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/soccer/esp.1/teams/86/roster?season=2026",
+              "retrievedAt": "2026-11-12T23:35:38.178Z",
+              "competition": "esp.1",
+              "season": 2026,
+              "scope": "competition-season",
+              "teamId": "86"
+            }
+          }
+        ],
+        "provenance": {
+          "provider": "espn",
+          "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/soccer/esp.1/teams/86/roster?season=2026",
+          "retrievedAt": "2026-11-12T23:35:38.178Z",
+          "competition": "esp.1",
+          "season": 2026,
+          "scope": "competition-season",
+          "teamId": "86"
+        }
+      },
+      "match": {
+        "id": "401882814",
+        "name": "Elche v Real Betis",
+        "homeScore": 0,
+        "awayScore": 2,
+        "eventCount": 30,
+        "lineups": [
+          {
+            "teamId": "3751",
+            "formation": "4-3-3",
+            "starters": 11,
+            "bench": 12,
+            "statisticsCount": 322
+          },
+          {
+            "teamId": "244",
+            "formation": "4-2-3-1",
+            "starters": 11,
+            "bench": 12,
+            "statisticsCount": 322
+          }
+        ],
+        "capabilities": {
+          "details": {
+            "available": true
+          },
+          "events": {
+            "available": true
+          },
+          "lineups": {
+            "available": true
+          },
+          "bench": {
+            "available": true
+          },
+          "formations": {
+            "available": true
+          },
+          "teamStatistics": {
+            "available": true
+          },
+          "playerMatchStatistics": {
+            "available": true
+          }
+        },
+        "provenance": {
+          "provider": "espn",
+          "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/soccer/esp.1/summary?event=401882814",
+          "retrievedAt": "2026-11-12T23:35:39.505Z",
+          "competition": "esp.1",
+          "season": 2026,
+          "scope": "match"
+        }
+      },
+      "boundedSearchCount": 1,
+      "elapsedMs": 2636
+    }
+  ]
+}

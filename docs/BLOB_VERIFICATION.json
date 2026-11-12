@@ -1,0 +1,15 @@
+{
+  "verifiedAt": "2026-11-12T23:48:26.463Z",
+  "store": "tgiq-football-media",
+  "region": "fra1",
+  "access": "private",
+  "authenticated": true,
+  "checks": [
+    "Private object upload",
+    "Durable metadata in PostgreSQL",
+    "Unauthenticated app read denied",
+    "Authenticated app stream byte integrity",
+    "Direct public object read denied"
+  ],
+  "checksPassed": 5
+}

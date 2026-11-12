@@ -1,0 +1,51 @@
+# Persistence, access and output protocol
+
+## Local operation
+
+Use Node 24 or later. Run `npm run setup`, then `npm run dev`. Setup preserves existing configuration, creates `.env.local` with random session and producer credentials, and records the local producer password in `.data/local-access.json` (mode 0600). Neither is committed. No football API key is required.
+
+The explicitly configured `TGIQ_SQLITE_PATH=.data/tgiq.sqlite` uses Node's native SQLite driver, WAL and a 5-second busy timeout. Episodes, media, editorial snapshots, cache and current program survive reloads and process restarts. Back up the `.data` directory while the app is stopped, or use SQLite's supported online backup tooling. This is a durable local application, not a cloud disk fallback. The database is refused if `VERCEL` is present.
+
+`node scripts/db-migrate.mjs` explicitly loads `.env.local`, creates the current schema idempotently, and reports the driver. Application startup applies the same schema lazily before the first persistence request. `migrations/001_initial.sql` is the equivalent PostgreSQL migration.
+
+## Deployment configuration
+
+Provision a PostgreSQL database in the authorised TGIQ deployment project. Set `DATABASE_URL` to its pooled connection URL, `SESSION_SECRET` to at least 32 random characters, `PRODUCER_PASSWORD_HASH` to `salt:hexScryptDigest`, and `APP_ORIGIN` to the exact HTTPS deployment origin. The local setup script demonstrates the password encoding; never reuse the local password in production. Driver connections use a pool of at most four, a 5-second connection timeout and 10-second idle timeout. TLS policy follows the provider connection URL. No production path writes state or uploads to local disk.
+
+`BLOB_READ_WRITE_TOKEN` or `BLOB_STORE_ID` enables the dedicated private Vercel Blob store for uploads. OIDC authentication is supported by the Blob SDK when configured by the platform. Without object storage, uploads remain durable in the relational database as encoded bytes; the producer receives the storage kind. Both object and database asset delivery require producer or output access through the application. Private object URLs deny direct unauthenticated reads; the server streams authorized reads without revealing a storage token. The metadata row always records origin, attribution, rights note, SHA-256, MIME and creation time. PNG/JPEG/WebP/GIF headers are checked and files are capped at 3 MB. SVG is excluded from uploads. Image access does not establish broadcast usage rights.
+
+A new, separate Prisma Postgres Free database was provisioned after explicit user authorization. Its PostgreSQL path was authenticated and verified with 14 store/migration checks; see `POSTGRES_VERIFICATION.json` and `DEPLOYMENT.md`. Connection settings are in ignored `.env.production.local` (mode 0600), independent from the local SQLite setup. A separate TGIQ Vercel project and dedicated private Blob store were subsequently provisioned after the user explicitly authorized their existing paid Vercel scope. Private Blob upload/stream/public-denial checks passed; see `BLOB_VERIFICATION.json`. Cloud application deployment status is recorded in `DEPLOYMENT.md`. Local SQLite and the dedicated cloud PostgreSQL store are both directly verified.
+
+## Producer access
+
+The producer password is checked with salted scrypt; the password itself is not stored by the server. An authenticated login issues a signed, expiring 12-hour HttpOnly, SameSite=Strict cookie (Secure on HTTPS). Sessions are invalidated by rotating `SESSION_SECRET`. Failed-login attempts are persisted and limited to ten attempts per forwarded client identity per 15 minutes. A successful login clears that identity's counter, so normal sign-ins do not accumulate toward a lockout. When deploying outside Vercel, configure a trusted reverse proxy to overwrite client forwarding headers.
+
+All mutation endpoints, including login, require `x-tgiq-csrf: 1`. If an Origin header is present, it must match the request origin or configured `APP_ORIGIN`. Output tokens cannot authenticate producer mutations. Never expose the producer password in output URLs.
+
+`POST /api/program/access` rotates a random 256-bit read-only output token. Only its SHA-256 digest is stored. The response returns `{token,path}` once, with `/output?token=...`; rotating revokes prior state/media access. Store that URL in the studio/OBS configuration. Existing pictures and snapshots already received by a browser cannot be remotely erased. Output access grants reads of the program and referenced media only.
+
+## Authoritative program state
+
+The database row stores `{version,graphic,frozen,updatedAt}`. `POST /api/program` requires an expected version plus one of `take`, `clear`, `freeze`, `unfreeze`. A take stores a validated graphic snapshot, independently from provider cache. Clear sets the graphic to null. Freeze is persisted and has no provider dependency. A stale write receives HTTP 409; two simultaneous writes against the same version cannot both win. This protects against late network responses reverting a newer selection.
+
+`GET /api/program` accepts either the producer cookie or a valid read-only `token`. `/api/program/events` sends ordered SSE `event: state` updates and IDs at changed database versions, checking every 500 ms for up to 25 seconds. This polling interval is dispatch latency, separate from the receipt-to-frame render target; it does not claim instantaneous delivery. Clients reconnect and receive the complete latest snapshot immediately, including after a missed update. Token validity and current program are checked together in one SQL read on every stream iteration. Polling clients may use the GET endpoint and must ignore versions at or below their applied version. Both paths work across separate browsers/devices through the same database; there is no permanent in-process WebSocket dependency.
+
+No provider fetch occurs in program take/freeze/clear or episode retrieval. The output client owns image/font preloading and keeps its current graphic if preparing a later snapshot fails. Stream failures carry no graphics or error text into the output stage. A cleared graphic alone produces a deliberately blank stage. Freeze prevents automatic data changes; explicit takes remain intentional actions.
+
+## Episodes and interchange
+
+Episode schema version 1 stores name, ordered items, archive flag, creation/update time and an optimistic-concurrency version. Each item stores its graphic configuration, source snapshot, source IDs/scope, overrides and media IDs separately. Refreshing cached football data cannot erase a saved item or its overrides. The producer sends the current episode version with changes; stale changes are rejected. Rundown IDs must be unique.
+
+Create, get, update, duplicate and archive use `/api/episodes` and `/api/episodes/[id]`. Duplication creates fresh episode/item IDs while preserving graphic snapshots and metadata. Deletion of an episode is archive, so it can be recovered. JSON export is the validated complete episode document; import accepts `{import: episode}`, requires schema version 1, assigns a new episode identity and returns a `missingMedia` list. Media bytes are not embedded in the episode JSON. Importing on another installation requires its referenced files to be uploaded/relinked; missing files are reported rather than replaced. Remote image availability is checked during producer preflight; expired remote URLs require replacement.
+
+Provider cache uses an independent table with explicit expiry. It preserves null versus zero and carries the provider's normalised provenance payload. Expired rows are pruned on writes. The cache is an optimisation, never the source of a saved editorial snapshot.
+
+## Connection limits
+
+A browser retains the current output while its connection fails. Already prepared pictures can be reused by the browser cache. New remote lookup, cross-device control, server episode writes, an uncached image and a first output connection require connectivity. This build does not claim fully offline remote production control. Persisted server snapshots remain available after process restart; browser rendering of remote portraits still depends on the portrait host or an explicitly uploaded replacement.
+
+## Direct verification
+
+`npm test -- tests/persistence.test.ts`: 17 tests passed on local durable SQLite. The tests verify database reopen, episode/schema roundtrip, duplicate identities, separate overrides/source snapshots, unavailable versus zero values, missing-media reporting, stale/concurrent-write rejection, freeze independent of providers, revocable read-only token digests, signed session expiry/tampering, repeated successful-login counter reset, failed-login rate limiting, CSRF/origin checks, HTTP read-only output access, login cookie flags, incompatible import rejection, image bytes/metadata persistence, forged image MIME rejection, refusal of local disk in Vercel and cache expiry. `node scripts/db-migrate.mjs` succeeded against the configured local SQLite file. Authenticated Prisma Postgres Free verification also passed 14 checks through `npx tsx scripts/db-verify.ts`, including actual migrations, full episode/program/media persistence, concurrent CAS and reconnect. Only agent-owned test rows were removed afterward, leaving the program deliberately blank/frozen. Authenticated private Vercel Blob verification passed five checks through `npx tsx scripts/db-verify-media.ts`, including private upload, PostgreSQL metadata, authorized streaming byte integrity, unauthenticated app-read denial and direct-object denial. That test removed only its own media object/metadata.
+
+Official implementation references consulted: [Node SQLite](https://nodejs.org/docs/latest-v24.x/api/sqlite.html), [node-postgres parameterised queries](https://node-postgres.com/features/queries), and [Next.js cookies](https://nextjs.org/docs/app/api-reference/functions/cookies).

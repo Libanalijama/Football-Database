@@ -1,0 +1,11 @@
+{
+  "capturedAt": "2026-11-12T23:39:10.279Z",
+  "viewport": {
+    "width": 1920,
+    "height": 1080
+  },
+  "renderer": "Same GraphicStage React component as producer/output; isolated test-only fixtures",
+  "templates": 28,
+  "edgeCases": 5,
+  "clippingChecks": []
+}

@@ -1,0 +1,24 @@
+{
+  "verifiedAt": "2026-11-12T23:42:53.094Z",
+  "storage": "Prisma Postgres",
+  "plan": "Free",
+  "authenticated": true,
+  "checks": [
+    "Authenticated PostgreSQL SELECT",
+    "Schema migration 1",
+    "Episode source snapshot, overrides, null versus zero, missing-media report",
+    "Episode JSON schema roundtrip",
+    "Duplicate episode/rundown identities",
+    "Episode stale-write rejection",
+    "Authoritative program snapshot",
+    "Concurrent program compare-and-swap",
+    "Freeze without provider dependency",
+    "Connection reopen persistence",
+    "Revocable read-only access token digests",
+    "Durable media bytes/origin/hash",
+    "Independent provider cache",
+    "Deliberate clear"
+  ],
+  "checksPassed": 14,
+  "cloudHostingDeployed": false
+}

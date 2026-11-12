@@ -1,0 +1,36 @@
+{
+  "timestamp": "2026-11-12T23:44:27.429Z",
+  "viewport": {
+    "width": 1024,
+    "height": 768
+  },
+  "touch": true,
+  "episodeName": "LOCAL QA — tablet image and editorial verification",
+  "savedGraphics": 2,
+  "uploadedTransparentPng": true,
+  "imageOriginAndUsageEntered": true,
+  "sourceAttributionAndPeriodSaved": true,
+  "zeroValueSaved": true,
+  "templateChangePreservedSubject": true,
+  "transferFields": {
+    "Status": 1,
+    "Initial fee": 1,
+    "Conditional add-ons": 1,
+    "Maximum fee": 1,
+    "Currency": 1,
+    "From": 1,
+    "To": 1,
+    "Date": 1
+  },
+  "takeLiveVisibleWhileEditing": true,
+  "takeLiveBounds": {
+    "x": 522.9375,
+    "y": 148,
+    "width": 316.703125,
+    "height": 45
+  },
+  "horizontalOverflow": false,
+  "programMutationsFromThisBrowser": 0,
+  "programVersionBefore": 5,
+  "programVersionAfter": 5
+}

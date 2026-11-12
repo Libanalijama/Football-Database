@@ -1,0 +1,269 @@
+{
+  "schemaVersion": 1,
+  "references": [
+    {
+      "id": "profiles.player",
+      "archive": "TGIQ  Personal Profiles — Four Roles.zip",
+      "originalArchivePath": "TGIQ  Personal Profiles ΓÇö Four Roles/1.png",
+      "normalizedOriginalName": "1.png",
+      "path": "references/profiles/player.png",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "9dc54ca7288b9ddd61966ac9c713f2eda4fe13c8518e80994529f6822aeaa8c3",
+      "usage": "Flattened visual reference only; not used as renderer background or independent text/portrait asset"
+    },
+    {
+      "id": "profiles.manager",
+      "archive": "TGIQ  Personal Profiles — Four Roles.zip",
+      "originalArchivePath": "TGIQ  Personal Profiles ΓÇö Four Roles/Manager profile ΓÇö MIKEL ARTETA.png",
+      "normalizedOriginalName": "Manager profile — MIKEL ARTETA.png",
+      "path": "references/profiles/manager.png",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "830180740ebbc9d5311bea1e4c842320f66157a341a643b419a4c7b734766f50",
+      "usage": "Flattened visual reference only; not used as renderer background or independent text/portrait asset"
+    },
+    {
+      "id": "profiles.owner",
+      "archive": "TGIQ  Personal Profiles — Four Roles.zip",
+      "originalArchivePath": "TGIQ  Personal Profiles ΓÇö Four Roles/Owner profile ΓÇö JOHN W. HENRY.png",
+      "normalizedOriginalName": "Owner profile — JOHN W. HENRY.png",
+      "path": "references/profiles/owner.png",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "409e8830ceb59910ad680eaac544c98d8070bd76b004d6467e18271ca219ac5c",
+      "usage": "Flattened visual reference only; not used as renderer background or independent text/portrait asset"
+    },
+    {
+      "id": "profiles.executive",
+      "archive": "TGIQ  Personal Profiles — Four Roles.zip",
+      "originalArchivePath": "TGIQ  Personal Profiles ΓÇö Four Roles/Executive profile ΓÇö BILLY HOGAN.png",
+      "normalizedOriginalName": "Executive profile — BILLY HOGAN.png",
+      "path": "references/profiles/executive.png",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "853da30be108c8337a4386150fddfa1bfbf34027a4b881f5a8068a9c9ff0a1d6",
+      "usage": "Flattened visual reference only; not used as renderer background or independent text/portrait asset"
+    },
+    {
+      "id": "transfers.announcement",
+      "archive": "TGIQ  Transfer Cards — Four Layouts.zip",
+      "originalArchivePath": "TGIQ  Transfer Cards ΓÇö Four Layouts/Transfer Card ΓÇö Alexander Isak.png",
+      "normalizedOriginalName": "Transfer Card — Alexander Isak.png",
+      "path": "references/transfers/announcement.png",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "68c4b6d6044429a10710ea16d585df8cd61884a59146bd63e0a14d00d55b76b3",
+      "usage": "Flattened visual reference only; not used as renderer background or independent text/portrait asset"
+    },
+    {
+      "id": "transfers.fees",
+      "archive": "TGIQ  Transfer Cards — Four Layouts.zip",
+      "originalArchivePath": "TGIQ  Transfer Cards ΓÇö Four Layouts/Fees ΓÇö Caicedo initial fee and add-ons.png",
+      "normalizedOriginalName": "Fees — Caicedo initial fee and add-ons.png",
+      "path": "references/transfers/fees.png",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "2d5b81a64b3fca41637ec27d29e2e0639de5727e3568876e6917321547c9cfa8",
+      "usage": "Flattened visual reference only; not used as renderer background or independent text/portrait asset"
+    },
+    {
+      "id": "transfers.clubs",
+      "archive": "TGIQ  Transfer Cards — Four Layouts.zip",
+      "originalArchivePath": "TGIQ  Transfer Cards ΓÇö Four Layouts/Clubs ΓÇö Rice, West Ham United to Arsenal.png",
+      "normalizedOriginalName": "Clubs — Rice, West Ham United to Arsenal.png",
+      "path": "references/transfers/clubs.png",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "7c4db749391b541fc0bf017fdf0ab39655b26d8806a6947474fc7dd8bc5930cd",
+      "usage": "Flattened visual reference only; not used as renderer background or independent text/portrait asset"
+    },
+    {
+      "id": "transfers.contract",
+      "archive": "TGIQ  Transfer Cards — Four Layouts.zip",
+      "originalArchivePath": "TGIQ  Transfer Cards ΓÇö Four Layouts/Contract details ΓÇö Haaland extension to 2034.png",
+      "normalizedOriginalName": "Contract details — Haaland extension to 2034.png",
+      "path": "references/transfers/contract.png",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "bdba3557f858ecdd30b5896cfde566972e8b2011388fe6fabe67e6d8312f4d70",
+      "usage": "Flattened visual reference only; not used as renderer background or independent text/portrait asset"
+    },
+    {
+      "id": "comparisons.player",
+      "archive": "TGIQ  Comparison Templates — Five Layouts.zip",
+      "originalArchivePath": "TGIQ  Comparison Templates ΓÇö Five Layouts/16_9 Player Comparison ΓÇö Saka vs Salah.png",
+      "normalizedOriginalName": "16_9 Player Comparison — Saka vs Salah.png",
+      "path": "references/comparisons/player.png",
+      "width": 1920,
+      "height": 1080,
+      "sha256": "dc7ef3a01b54b96f75679434e87f5eab9cc968030562e1fa699667d1e0764b8b",
+      "usage": "Flattened visual reference only; not used as renderer background or independent text/portrait asset"
+    },
+    {
+      "id": "comparisons.manager",
+      "archive": "TGIQ  Comparison Templates — Five Layouts.zip",
+      "originalArchivePath": "TGIQ  Comparison Templates ΓÇö Five Layouts/Manager vs manager ΓÇö Arteta v Guardiola.png",
+      "normalizedOriginalName": "Manager vs manager — Arteta v Guardiola.png",
+      "path": "references/comparisons/manager.png",
+      "width": 1920,
+      "height": 1080,
+      "sha256": "b075f1717df3a7a82626727a85c90c3c4b5c86f529e8594b6cad5f7248f3b963",
+      "usage": "Flattened visual reference only; not used as renderer background or independent text/portrait asset"
+    },
+    {
+      "id": "comparisons.season",
+      "archive": "TGIQ  Comparison Templates — Five Layouts.zip",
+      "originalArchivePath": "TGIQ  Comparison Templates ΓÇö Five Layouts/Season vs season ΓÇö Arsenal 2022_23 v 2023_24.png",
+      "normalizedOriginalName": "Season vs season — Arsenal 2022_23 v 2023_24.png",
+      "path": "references/comparisons/season.png",
+      "width": 1920,
+      "height": 1080,
+      "sha256": "b347f7cccd5886b892eaf4ea8b42b94805da99b532a9eabb2a6c7f71cebd3267",
+      "usage": "Flattened visual reference only; not used as renderer background or independent text/portrait asset"
+    },
+    {
+      "id": "comparisons.finances",
+      "archive": "TGIQ  Comparison Templates — Five Layouts.zip",
+      "originalArchivePath": "TGIQ  Comparison Templates ΓÇö Five Layouts/Financial comparison ΓÇö Arsenal v Liverpool FY2024.png",
+      "normalizedOriginalName": "Financial comparison — Arsenal v Liverpool FY2024.png",
+      "path": "references/comparisons/finances.png",
+      "width": 1920,
+      "height": 1080,
+      "sha256": "8e9f823b571d436f19772ba8ad8406940ee77a4483deb3e912e47f3cf23e83f3",
+      "usage": "Flattened visual reference only; not used as renderer background or independent text/portrait asset"
+    },
+    {
+      "id": "comparisons.arguments",
+      "archive": "TGIQ  Comparison Templates — Five Layouts.zip",
+      "originalArchivePath": "TGIQ  Comparison Templates ΓÇö Five Layouts/Opposing arguments ΓÇö Academy priorities.png",
+      "normalizedOriginalName": "Opposing arguments — Academy priorities.png",
+      "path": "references/comparisons/arguments.png",
+      "width": 1920,
+      "height": 1080,
+      "sha256": "8f2f6a072993c9673be7585dc44e03e2b3452ed16091980fdb5b518abb161277",
+      "usage": "Flattened visual reference only; not used as renderer background or independent text/portrait asset"
+    },
+    {
+      "id": "statistics.player",
+      "archive": "TGIQ  Statistics Card — Four Layouts.zip",
+      "originalArchivePath": "TGIQ  Statistics Card ΓÇö Four Layouts/Player statistics ΓÇö Bukayo Saka.png",
+      "normalizedOriginalName": "Player statistics — Bukayo Saka.png",
+      "path": "references/statistics/player.png",
+      "width": 1920,
+      "height": 1080,
+      "sha256": "0a65818a859e43a405d4c403ffc65810ae67b86e17abb29bae85125541ab8f1e",
+      "usage": "Flattened visual reference only; not used as renderer background or independent text/portrait asset"
+    },
+    {
+      "id": "statistics.match",
+      "archive": "TGIQ  Statistics Card — Four Layouts.zip",
+      "originalArchivePath": "TGIQ  Statistics Card ΓÇö Four Layouts/Match statistics ΓÇö Spain v England.png",
+      "normalizedOriginalName": "Match statistics — Spain v England.png",
+      "path": "references/statistics/match.png",
+      "width": 1920,
+      "height": 1080,
+      "sha256": "0d731b8f3ff9a518667b8d99939625e5b31a87fd6225613d5335229739f2649d",
+      "usage": "Flattened visual reference only; not used as renderer background or independent text/portrait asset"
+    },
+    {
+      "id": "statistics.finances",
+      "archive": "TGIQ  Statistics Card — Four Layouts.zip",
+      "originalArchivePath": "TGIQ  Statistics Card ΓÇö Four Layouts/Club financial summary ΓÇö Arsenal FY2024.png",
+      "normalizedOriginalName": "Club financial summary — Arsenal FY2024.png",
+      "path": "references/statistics/finances.png",
+      "width": 1920,
+      "height": 1080,
+      "sha256": "4aab3518f14676ca833b3fc516eeba8e7def39389c310e0822e06f0b6185db8c",
+      "usage": "Flattened visual reference only; not used as renderer background or independent text/portrait asset"
+    },
+    {
+      "id": "statistics.big-number",
+      "archive": "TGIQ  Statistics Card — Four Layouts.zip",
+      "originalArchivePath": "TGIQ  Statistics Card ΓÇö Four Layouts/Big-number reveal ΓÇö 25 goal involvements.png",
+      "normalizedOriginalName": "Big-number reveal — 25 goal involvements.png",
+      "path": "references/statistics/big-number.png",
+      "width": 1920,
+      "height": 1080,
+      "sha256": "a66f382b2afcb8b43556d602341ba569c17899beb4a4e890b7b81ce87e795d69",
+      "usage": "Flattened visual reference only; not used as renderer background or independent text/portrait asset"
+    },
+    {
+      "id": "timelines.player",
+      "archive": "TGIQ  Timeline — Player, Manager & History.zip",
+      "originalArchivePath": "TGIQ  Timeline ΓÇö Player, Manager & History/Player career ΓÇö Cristiano Ronaldo.png",
+      "normalizedOriginalName": "Player career — Cristiano Ronaldo.png",
+      "path": "references/timelines/player.png",
+      "width": 1920,
+      "height": 1080,
+      "sha256": "277c199a951fde241ea2b830286faafc1b8e6bbdad8123c0146ae2d36c8108e3",
+      "usage": "Flattened visual reference only; not used as renderer background or independent text/portrait asset"
+    },
+    {
+      "id": "timelines.manager",
+      "archive": "TGIQ  Timeline — Player, Manager & History.zip",
+      "originalArchivePath": "TGIQ  Timeline ΓÇö Player, Manager & History/Manager career ΓÇö Pep Guardiola.png",
+      "normalizedOriginalName": "Manager career — Pep Guardiola.png",
+      "path": "references/timelines/manager.png",
+      "width": 1920,
+      "height": 1080,
+      "sha256": "5f4d2434ec3592c35432d31f6ae8f1422c3d864e0531388c75a48136fdda84d3",
+      "usage": "Flattened visual reference only; not used as renderer background or independent text/portrait asset"
+    },
+    {
+      "id": "timelines.history",
+      "archive": "TGIQ  Timeline — Player, Manager & History.zip",
+      "originalArchivePath": "TGIQ  Timeline ΓÇö Player, Manager & History/Historical events ΓÇö Premier League defining moments.png",
+      "normalizedOriginalName": "Historical events — Premier League defining moments.png",
+      "path": "references/timelines/history.png",
+      "width": 1920,
+      "height": 1080,
+      "sha256": "668a604f41a00f460b6dd1b065109cb0cc86b5c143aa8be75936aed5fec5bb19",
+      "usage": "Flattened visual reference only; not used as renderer background or independent text/portrait asset"
+    },
+    {
+      "id": "scoreboards.result",
+      "archive": "TGIQ  Scoreboard — Results, Scorers & Match Details.zip",
+      "originalArchivePath": "TGIQ  Scoreboard ΓÇö Results, Scorers & Match Details/Match result ΓÇö Arsenal v Manchester United.png",
+      "normalizedOriginalName": "Match result — Arsenal v Manchester United.png",
+      "path": "references/scoreboards/result.png",
+      "width": 1920,
+      "height": 1080,
+      "sha256": "b0981b9ae301a138b7b1ae8c5ae3da6051130a2e9a91f7837e96653d9fbe47a4",
+      "usage": "Flattened visual reference only; not used as renderer background or independent text/portrait asset"
+    },
+    {
+      "id": "scoreboards.scorers",
+      "archive": "TGIQ  Scoreboard — Results, Scorers & Match Details.zip",
+      "originalArchivePath": "TGIQ  Scoreboard ΓÇö Results, Scorers & Match Details/Scorers ΓÇö chronological goal summary.png",
+      "normalizedOriginalName": "Scorers — chronological goal summary.png",
+      "path": "references/scoreboards/scorers.png",
+      "width": 1920,
+      "height": 1080,
+      "sha256": "fde0107d9ca4e36e92e80a88a0237d9b9df5f0cca3c0c8418b373e2aca7b691f",
+      "usage": "Flattened visual reference only; not used as renderer background or independent text/portrait asset"
+    },
+    {
+      "id": "scoreboards.details",
+      "archive": "TGIQ  Scoreboard — Results, Scorers & Match Details.zip",
+      "originalArchivePath": "TGIQ  Scoreboard ΓÇö Results, Scorers & Match Details/Match details ΓÇö date, venue and officials.png",
+      "normalizedOriginalName": "Match details — date, venue and officials.png",
+      "path": "references/scoreboards/details.png",
+      "width": 1920,
+      "height": 1080,
+      "sha256": "6d1bcb7bbe0df3969c736107885c7c21b77233c81fc0d01d669710bf27518fcb",
+      "usage": "Flattened visual reference only; not used as renderer background or independent text/portrait asset"
+    },
+    {
+      "id": "scoreboards.cup",
+      "archive": "TGIQ  Scoreboard — Results, Scorers & Match Details.zip",
+      "originalArchivePath": "TGIQ  Scoreboard ΓÇö Results, Scorers & Match Details/Cup result ΓÇö extra time and penalties.png",
+      "normalizedOriginalName": "Cup result — extra time and penalties.png",
+      "path": "references/scoreboards/cup.png",
+      "width": 1920,
+      "height": 1080,
+      "sha256": "acc210b6972292aa5d67d4c9b67c3349c4ccd98a05b6c1b3c80ff52979bd69c8",
+      "usage": "Flattened visual reference only; not used as renderer background or independent text/portrait asset"
+    }
+  ]
+}

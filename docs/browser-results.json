@@ -1,0 +1,30 @@
+{
+  "checks": [
+    {
+      "name": "ESPN Premier League team -> squad -> player -> populated profile",
+      "pass": true
+    },
+    {
+      "name": "Read-only output in independent browser session",
+      "pass": true
+    },
+    {
+      "name": "Browsing leaves on-air snapshot unchanged",
+      "pass": true
+    },
+    {
+      "name": "ESPN LaLiga unseen team -> squad -> player -> profile",
+      "pass": true
+    },
+    {
+      "name": "Independent comparison seasons",
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "outputSwitchMs": [
+    68.19999999925494,
+    23.699999999254942
+  ],
+  "failure": "TypeError: apiRequestContext.get: Invalid URL"
+}
