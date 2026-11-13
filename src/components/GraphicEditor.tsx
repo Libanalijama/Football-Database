@@ -51,7 +51,9 @@ export function GraphicEditor({
         headers: { "x-tgiq-csrf": "1" },
         body,
       });
-      const d = await r.json();
+      const d = await r.json().catch(() => {
+        throw Error("Upload unavailable. Retry shortly.");
+      });
       if (!r.ok) throw Error(d.error);
       edit((g) => {
         g.subjects[index].image = d.asset.url;
@@ -195,7 +197,30 @@ export function GraphicEditor({
           ].map((k) => (
             <label key={k}>
               {k}
-              {k==='Status'&&graphic.templateId.startsWith('transfer-')?<select aria-label="Transfer status" value={val(graphic.fields[k])} onChange={e=>edit(g=>{g.fields[k]=e.target.value||null})}><option value="">Select status</option><option value="Confirmed">Confirmed</option><option value="Reported">Reported</option></select>:<input value={val(graphic.fields[k])} onChange={e=>edit(g=>{g.fields[k]=e.target.value||null})}/> }
+              {k === "Status" && graphic.templateId.startsWith("transfer-") ? (
+                <select
+                  aria-label="Transfer status"
+                  value={val(graphic.fields[k])}
+                  onChange={(e) =>
+                    edit((g) => {
+                      g.fields[k] = e.target.value || null;
+                    })
+                  }
+                >
+                  <option value="">Select status</option>
+                  <option value="Confirmed">Confirmed</option>
+                  <option value="Reported">Reported</option>
+                </select>
+              ) : (
+                <input
+                  value={val(graphic.fields[k])}
+                  onChange={(e) =>
+                    edit((g) => {
+                      g.fields[k] = e.target.value || null;
+                    })
+                  }
+                />
+              )}
             </label>
           ))}
         </div>

@@ -8,7 +8,7 @@ export interface Database { query<T extends Row = Row>(sql: string, parameters?:
 let database: Promise<Database> | undefined;
 
 export function storageStatus() {
-  if (process.env.DATABASE_URL) return { configured: true, kind: 'postgres' as const };
+  if (process.env.DATABASE_URL_UNPOOLED || process.env.DATABASE_URL || process.env.DATABASE_URL_POOLED) return { configured: true, kind: 'postgres' as const };
   if (!process.env.VERCEL && process.env.TGIQ_SQLITE_PATH) return { configured: true, kind: 'sqlite' as const };
   return { configured: false, kind: null };
 }
@@ -20,11 +20,13 @@ export async function getDatabase(): Promise<Database> {
 
 async function openDatabase(): Promise<Database> {
   let db: Database;
-  if (process.env.DATABASE_URL) {
-    const connection = new URL(process.env.DATABASE_URL_POOLED ?? process.env.DATABASE_URL);
+  const connectionString = process.env.DATABASE_URL_UNPOOLED || process.env.DATABASE_URL || process.env.DATABASE_URL_POOLED;
+  if (connectionString) {
+    // Prefer the verified direct endpoint when configured; retain the operator's explicit URL.
+    const connection = new URL(connectionString);
     // Keep current pg certificate verification explicit across pg-connection-string upgrades.
     if (['prefer', 'require', 'verify-ca'].includes(connection.searchParams.get('sslmode') ?? '')) connection.searchParams.set('sslmode', 'verify-full');
-    const pool = new Pool({ connectionString: connection.toString(), max: 4, connectionTimeoutMillis: 5000, idleTimeoutMillis: 10000 });
+    const pool = new Pool({ connectionString: connection.toString(), max: 4, connectionTimeoutMillis: 5000, query_timeout: 7000, statement_timeout: 5000, lock_timeout: 3000, idleTimeoutMillis: 10000 });
     db = { kind: 'postgres', async query<T extends Row>(sql: string, parameters: Parameter[] = []) { const result = await pool.query(sql, parameters); return { rows: result.rows as T[], rowCount: result.rowCount ?? 0 }; }, close: () => pool.end() };
   } else {
     if (process.env.VERCEL || !process.env.TGIQ_SQLITE_PATH) throw new Error('Connect durable storage: set DATABASE_URL. For local use, run npm run setup:local.');
@@ -46,7 +48,8 @@ async function openDatabase(): Promise<Database> {
       return { rows: [], rowCount: Number(result.changes) };
     }, async close() { sqlite.close(); } };
   }
-  await migrate(db);
+  // Cloud PostgreSQL migrations are an explicit deployment step. Never run DDL on a request.
+  if (db.kind === 'sqlite') await migrate(db);
   return db;
 }
 
@@ -66,6 +69,8 @@ async function migrate(db: Database) {
   await db.query(`INSERT INTO program (id, version, graphic, frozen, updated_at) VALUES ('main', 0, NULL, 1, $1) ON CONFLICT(id) DO NOTHING`, [now]);
   await db.query(`INSERT INTO tgiq_migrations (version, applied_at) VALUES (1, $1) ON CONFLICT(version) DO NOTHING`, [now]);
 }
+
+export async function migrateDatabase() { const db = await getDatabase(); await migrate(db); return db.kind; }
 
 export async function closeDatabase() { if (database) await (await database).close(); database = undefined; }
 

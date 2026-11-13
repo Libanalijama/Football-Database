@@ -2,7 +2,7 @@
 import assert from 'node:assert/strict';
 import { randomUUID } from 'node:crypto';
 import { existsSync, writeFileSync } from 'node:fs';
-import { getDatabase, closeDatabase, getCached, setCached } from '../src/lib/server/db';
+import { getDatabase, migrateDatabase, closeDatabase, getCached, setCached } from '../src/lib/server/db';
 import { createEpisode, getEpisode, updateEpisode, getProgram, mutateProgram, rotateOutputToken, validOutputToken, missingMedia } from '../src/lib/server/store';
 import { saveAsset, getAsset } from '../src/lib/server/assets';
 import { episodeSchema } from '../src/lib/server/models';
@@ -17,6 +17,7 @@ async function main() {
   let initialProgram: Awaited<ReturnType<typeof getProgram>> | undefined;
   let programChanged = false; let originalOutputHash: string | null = null; let ownedOutputHash: string | null = null; let verificationGraphicId: string | null = null;
   try {
+    await migrateDatabase();
     const db = await getDatabase(); assert.equal(db.kind, 'postgres');
     const basic = await db.query('SELECT 1 AS connected'); assert.equal(Number(basic.rows[0].connected), 1); checks.push('Authenticated PostgreSQL SELECT');
     const migration = await db.query('SELECT version FROM tgiq_migrations WHERE version=1'); assert.equal(Number(migration.rows[0].version),1); checks.push('Schema migration 1');

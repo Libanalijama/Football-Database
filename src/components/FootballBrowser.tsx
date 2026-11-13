@@ -34,7 +34,9 @@ export async function footballRequest<T>(
     if (v !== undefined && v !== "") q.set(k, String(v));
   });
   const r = await fetch(`/api/football?${q}`, { signal });
-  const body = await r.json();
+  const body = await r.json().catch(() => {
+    throw Error("Data source unavailable. Retry shortly.");
+  });
   if (!r.ok) throw Error(body.error ?? "Data unavailable");
   return body.data as T;
 }

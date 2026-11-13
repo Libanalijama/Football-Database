@@ -49,7 +49,9 @@ async function api<T>(url: string, method = "GET", body?: unknown): Promise<T> {
     headers: { "Content-Type": "application/json", "x-tgiq-csrf": "1" },
     body: body === undefined ? undefined : JSON.stringify(body),
   });
-  const d = await r.json();
+  const d = await r.json().catch(() => {
+    throw Error("Server unavailable. Saved output remains on air.");
+  });
   if (!r.ok) throw Error(d.error ?? "Request unavailable");
   return d;
 }
@@ -127,6 +129,7 @@ export function Producer() {
   const [savedQuery, setSavedQuery] = useState("");
   const [archiveView, setArchiveView] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
+  const programIntent = useRef(0);
   const latest = useRef({ draft, program });
   useEffect(() => {
     latest.current = { draft, program };
@@ -287,6 +290,8 @@ export function Producer() {
       action: "take" | "clear" | "freeze" | "unfreeze",
       g?: GraphicDocument,
     ) => {
+      const intent = ++programIntent.current;
+      const expectedVersion = latest.current.program.version;
       setBusy(true);
       setError("");
       try {
@@ -295,12 +300,14 @@ export function Producer() {
           graphicSchema.parse(g);
           await preloadGraphic(g);
         }
+        if (intent !== programIntent.current) return;
         const p = await api<ProgramState>("/api/program", "POST", {
           action,
-          expectedVersion: latest.current.program.version,
+          expectedVersion,
           ...(g ? { graphic: g } : {}),
         });
-        setProgram(p);
+        setProgram((current) => (p.version > current.version ? p : current));
+        if (intent !== programIntent.current) return;
         setNotice(
           action === "take"
             ? "On air"
