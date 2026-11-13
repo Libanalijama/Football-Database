@@ -1,6 +1,10 @@
 {
   "checks": [
     {
+      "name": "Producer signs in",
+      "pass": true
+    },
+    {
       "name": "ESPN Premier League team -> squad -> player -> populated profile",
       "pass": true
     },
@@ -19,12 +23,36 @@
     {
       "name": "Independent comparison seasons",
       "pass": true
+    },
+    {
+      "name": "Durable saved snapshots, overrides and zero survive reload",
+      "pass": true
+    },
+    {
+      "name": "Episode duplicate retains rundown",
+      "pass": true
+    },
+    {
+      "name": "Episode UI exports portable JSON",
+      "pass": true
+    },
+    {
+      "name": "Export/import content round trip",
+      "pass": true
+    },
+    {
+      "name": "Unauthenticated producer mutation rejected",
+      "pass": true
+    },
+    {
+      "name": "No browser runtime errors",
+      "pass": true
     }
   ],
   "errors": [],
+  "signInMs": 511,
   "outputSwitchMs": [
-    68.19999999925494,
-    23.699999999254942
-  ],
-  "failure": "TypeError: apiRequestContext.get: Invalid URL"
+    80.09999999776483,
+    36.69999999925494
+  ]
 }

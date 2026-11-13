@@ -1,0 +1,56 @@
+{
+  "target": "https://tgiq-football-database.vercel.app",
+  "checkedAt": "2026-11-12T23:59:01.797Z",
+  "checks": [
+    {
+      "name": "Live fixture has starting lineups and bench",
+      "pass": true
+    },
+    {
+      "name": "Scoreboard live on independent output session",
+      "pass": true
+    },
+    {
+      "name": "Warm receipt-to-frame under250ms",
+      "pass": true
+    },
+    {
+      "name": "Preparing next scoreboard leaves current output unchanged",
+      "pass": true
+    },
+    {
+      "name": "Program freeze persisted",
+      "pass": true
+    },
+    {
+      "name": "Provider failure remains producer-only",
+      "pass": true
+    },
+    {
+      "name": "Already prepared graphic takes live while ESPN fails",
+      "pass": true
+    },
+    {
+      "name": "Output reload reconnects saved snapshot",
+      "pass": true
+    },
+    {
+      "name": "Network reconnect restores saved frame",
+      "pass": true
+    },
+    {
+      "name": "Revoked output token clears old session",
+      "pass": true
+    },
+    {
+      "name": "No runtime errors",
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "outputSwitchMs": [
+    111,
+    13.600000001490116,
+    5.600000001490116
+  ]
+}

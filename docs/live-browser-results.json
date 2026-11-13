@@ -1,0 +1,60 @@
+{
+  "target": "https://tgiq-football-database.vercel.app",
+  "checkedAt": "2026-11-12T23:57:58.959Z",
+  "checks": [
+    {
+      "name": "Producer signs in",
+      "pass": true
+    },
+    {
+      "name": "ESPN Premier League team -> squad -> player -> populated profile",
+      "pass": true
+    },
+    {
+      "name": "Read-only output in independent browser session",
+      "pass": true
+    },
+    {
+      "name": "Browsing leaves on-air snapshot unchanged",
+      "pass": true
+    },
+    {
+      "name": "ESPN LaLiga unseen team -> squad -> player -> profile",
+      "pass": true
+    },
+    {
+      "name": "Independent comparison seasons",
+      "pass": true
+    },
+    {
+      "name": "Durable saved snapshots, overrides and zero survive reload",
+      "pass": true
+    },
+    {
+      "name": "Episode duplicate retains rundown",
+      "pass": true
+    },
+    {
+      "name": "Episode UI exports portable JSON",
+      "pass": true
+    },
+    {
+      "name": "Export/import content round trip",
+      "pass": true
+    },
+    {
+      "name": "Unauthenticated producer mutation rejected",
+      "pass": true
+    },
+    {
+      "name": "No browser runtime errors",
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "signInMs": 5152,
+  "outputSwitchMs": [
+    116.79999999701977,
+    42.19999999552965
+  ]
+}

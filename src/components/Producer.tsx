@@ -40,7 +40,7 @@ import {
   type Selection,
 } from "@/lib/prepare";
 import { preloadGraphic } from "@/lib/playout";
-import { diffValues, applyOverrides } from "@/lib/overrides";
+import { diffValues, mergeGraphicRefresh } from "@/lib/overrides";
 import type { Episode, EpisodeItem, ProgramState } from "@/lib/server/models";
 async function api<T>(url: string, method = "GET", body?: unknown): Promise<T> {
   const r = await fetch(url, {
@@ -89,13 +89,17 @@ function comparisonGraphic(a: Selection, b: Selection) {
   g.source.attribution = "ESPN";
   return g;
 }
-async function readScope(scope: Record<string, unknown>): Promise<Selection> {
+async function readScope(
+  scope: Record<string, unknown>,
+  refresh = false,
+): Promise<Selection> {
   const data = await footballRequest({
     kind: String(scope.kind),
     competition: String(scope.competition),
     season: scope.season as number,
     id: scope.id as string | undefined,
     teamId: scope.teamId as string | undefined,
+    refresh: refresh ? "1" : undefined,
   });
   return { kind: scope.kind, data } as Selection;
 }
@@ -153,7 +157,11 @@ export function Producer() {
       try {
         const p = await api<ProgramState>("/api/program");
         if (active)
-          setProgram((current) => (p.version > current.version || p.frozen !== current.frozen ? p : current));
+          setProgram((current) =>
+            p.version > current.version || p.frozen !== current.frozen
+              ? p
+              : current,
+          );
       } catch {
       } finally {
         if (active) timer = setTimeout(poll, 700);
@@ -182,9 +190,16 @@ export function Producer() {
       setBusy(false);
     }
   }
-  function prepare(s: Selection) {
-    const g = prepareSelection(s);
-    setDraftScope(selectionScope(s));
+  function prepare(
+    s: Selection,
+    templateId?: string,
+    leaderCategory?: "totalGoals" | "goalAssists",
+  ) {
+    const g = prepareSelection(s, templateId, undefined, leaderCategory);
+    setDraftScope({
+      ...selectionScope(s),
+      ...(leaderCategory ? { leaderCategory } : {}),
+    });
     setDraft(g);
     setSource(structuredClone(g));
     setSelectedItem(null);
@@ -211,7 +226,24 @@ export function Producer() {
       return n;
     });
   }
-  function changeTemplate(id: string) {
+  async function changeTemplate(id: string) {
+    if (id === "ranking-players" && draftScope.kind === "league") {
+      try {
+        const current = await readScope(draftScope);
+        const fresh = prepareSelection(
+          current,
+          id,
+          undefined,
+          draftScope.leaderCategory as "totalGoals" | "goalAssists" | undefined,
+        );
+        setDraft(fresh);
+        setSource(structuredClone(fresh));
+        return;
+      } catch (e) {
+        report(e);
+        return;
+      }
+    }
     if (!draft) {
       const g = createGraphic(id);
       setDraft(g);
@@ -232,8 +264,8 @@ export function Producer() {
         templateRegistry[id].orientation === "sidebar" ? "transparent" : "navy",
       page: 0,
     });
-    setDraft(retargetGraphicScope(g,id));
-    if(source)setSource(retargetGraphicScope(source,id));
+    setDraft(retargetGraphicScope(g, id));
+    if (source) setSource(retargetGraphicScope(source, id));
   }
   async function previewDraft() {
     if (!draft) return;
@@ -422,16 +454,24 @@ export function Producer() {
         let fresh: GraphicDocument;
         if (draftScope.kind === "comparison") {
           const scopes = draftScope.subjects as Record<string, unknown>[];
-          const subjects = await Promise.all(scopes.map(readScope));
+          const subjects = await Promise.all(
+            scopes.map((s) => readScope(s, true)),
+          );
           fresh = comparisonGraphic(subjects[0], subjects[1]);
           fresh.templateId = draft.templateId;
         } else {
-          const current = await readScope(draftScope);
-          fresh = prepareSelection(current, draft.templateId);
+          const current = await readScope(draftScope, true);
+          fresh = prepareSelection(
+            current,
+            draft.templateId,
+            undefined,
+            draftScope.leaderCategory as
+              "totalGoals" | "goalAssists" | undefined,
+          );
         }
         fresh.id = draft.id;
         setSource(fresh);
-        setDraft(applyOverrides(fresh, diffValues(source ?? draft, draft)));
+        setDraft(mergeGraphicRefresh(source ?? draft, draft, fresh));
         setPreview(null);
         setNotice("Source refreshed · editorial overrides retained");
       } else {

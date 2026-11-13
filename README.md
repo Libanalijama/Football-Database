@@ -12,7 +12,7 @@ npm run setup
 npm run dev
 ```
 
-Open http://localhost:3000. The setup command creates private local producer credentials in `.data/local-access.json`. Open that file locally for the sign-in password. Do not share it or commit `.env.local`/`.data`. Episodes, uploaded media, source cache and on-air state persist in `.data/tgiq.sqlite` across restarts.
+Open http://localhost:3000. The setup command creates private local producer credentials in `.data/local-access.json`. Open that file locally for the sign-in password. Do not share it or commit `.env.local`/`.data`. Episodes, uploaded media, source cache and on-air state persist in `.data/tgiq.sqlite` across restarts. A configured production PostgreSQL connection takes priority for a production run; keep its private environment file separate when you want an isolated local database.
 
 For a local production run:
 
@@ -33,7 +33,7 @@ See [.env.example](.env.example), [storage and access](docs/STORAGE_AND_ACCESS.m
 
 Production requires a durable PostgreSQL `DATABASE_URL`, new `SESSION_SECRET`, scrypt `PRODUCER_PASSWORD_HASH`, and exact `APP_ORIGIN`. SQLite is explicitly refused on Vercel. Optional `BLOB_READ_WRITE_TOKEN` puts uploads in object storage; otherwise the durable relational database stores the image bytes and origin/usage metadata. Uploaded media is authenticated; output links provide read-only access. No provider key is exposed in client code. API-Football/Sportmonks are typed extension boundaries, with no authenticated optional adapter connected in this new build.
 
-The browser keeps the last approved output frame and caches already loaded media/fonts where the browser permits it. This helps an existing output device survive a connection interruption. It is not fully offline remote control: login, browsing uncached entities, saving, changing program and another device's first connection need the server. Preflight applies to the device where it runs; check the actual output browser before filming. Revoked output access clears on reconnect.
+An already open output browser keeps its last approved frame and caches already loaded media/fonts where the browser permits it. Loading or reloading the application shell requires a server connection; no fully offline reload is promised. This helps an existing output device survive a connection interruption. It is not fully offline remote control: login, browsing uncached entities, saving, changing program and another device's first connection need the server. Preflight applies to the device where it runs; check the actual output browser before filming. Revoked output access clears on reconnect.
 
 Financial/ownership/transfer/editorial content requires source URL, attribution and reporting date. Reported fees are labelled separately. Portrait and crest access does not establish commercial image rights; retain production's usage records. Missing statistics and photos remain unavailable; test fixtures never replace live data.
 

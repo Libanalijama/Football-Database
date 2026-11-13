@@ -27,7 +27,10 @@ export function Output() {
   const version = useRef(-1);
   const received = useRef(-1);
   useEffect(() => {
+    version.current = -1;
+    received.current = -1;
     let active = true;
+    let revoked = false;
     let retry: ReturnType<typeof setTimeout>;
     let stream: EventSource | null = null;
     const key = `tgiq-output:${token}`;
@@ -43,6 +46,7 @@ export function Output() {
       await preloadGraphic(next);
       if (
         active &&
+        !revoked &&
         p.version >= received.current &&
         p.version > version.current
       ) {
@@ -69,7 +73,11 @@ export function Output() {
       );
       stream.addEventListener("state", (event) => {
         try {
-          apply(JSON.parse((event as MessageEvent).data)).catch(() => {});
+          const state = JSON.parse((event as MessageEvent).data);
+          apply(state).catch(() => {
+            if (received.current === state.version)
+              received.current = version.current;
+          });
         } catch {}
       });
       stream.onerror = () => {
@@ -79,6 +87,7 @@ export function Output() {
         })
           .then(async (r) => {
             if (r.status === 401) {
+              revoked = true;
               if (active) {
                 setGraphic(null);
                 localStorage.removeItem(key);
@@ -89,14 +98,20 @@ export function Output() {
           })
           .catch(() => {})
           .finally(() => {
-            if (active) retry = setTimeout(connect, 1000);
+            if (active && !revoked) retry = setTimeout(connect, 1000);
           });
       };
     };
-    // This device's last approved frame survives a network outage/reload; the server remains authoritative.
+    // Retain this device's approved frame across transport failures; loading the app shell still needs a connection.
     try {
       const saved = localStorage.getItem(key);
-      if (saved) apply(JSON.parse(saved), true).catch(() => {});
+      if (saved) {
+        const state = JSON.parse(saved);
+        apply(state, true).catch(() => {
+          if (received.current === state.version)
+            received.current = version.current;
+        });
+      }
     } catch {}
     connect();
     if ("serviceWorker" in navigator)

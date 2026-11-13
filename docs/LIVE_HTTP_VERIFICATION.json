@@ -1,0 +1,106 @@
+{
+  "verifiedAt": "2026-11-12T23:56:55.618Z",
+  "url": "https://tgiq-football-database.vercel.app",
+  "commit": "3b09a062dedf1dc9585c60af19a8deca041b2c96",
+  "checks": [
+    "Public production health: PostgreSQL and object storage ready",
+    "Producer data requires authentication",
+    "Production-only producer credentials authenticate with secure session",
+    "Provider operational status available",
+    "No-key ESPN eng.1: discovered team, roster and player with provenance",
+    "No-key ESPN esp.1: discovered team, roster and player with provenance",
+    "Deployed private Blob upload and authenticated image delivery",
+    "Deployed private image denies unauthenticated access",
+    "Public requests cannot mutate program"
+  ],
+  "checksPassed": 9,
+  "scopes": [
+    {
+      "competition": "eng.1",
+      "season": 2026,
+      "teamId": "364",
+      "team": "Liverpool",
+      "playerId": "194121",
+      "player": "Freddie Woodman",
+      "statistics": 0,
+      "notices": [
+        "ESPN did not supply a profile photo. Upload a licensed replacement if required."
+      ]
+    },
+    {
+      "competition": "esp.1",
+      "season": 2026,
+      "teamId": "244",
+      "team": "Real Betis",
+      "playerId": "279660",
+      "player": "Diego Conde",
+      "statistics": 15,
+      "notices": [
+        "ESPN did not supply a profile photo. Upload a licensed replacement if required."
+      ]
+    }
+  ],
+  "timings": [
+    {
+      "path": "/api/health",
+      "status": 200,
+      "ms": 11890
+    },
+    {
+      "path": "/api/football",
+      "status": 401,
+      "ms": 94
+    },
+    {
+      "path": "/api/session",
+      "status": 200,
+      "ms": 422
+    },
+    {
+      "path": "/api/football",
+      "status": 200,
+      "ms": 68
+    },
+    {
+      "path": "/api/football",
+      "status": 200,
+      "ms": 214
+    },
+    {
+      "path": "/api/football",
+      "status": 200,
+      "ms": 978
+    },
+    {
+      "path": "/api/football",
+      "status": 200,
+      "ms": 825
+    },
+    {
+      "path": "/api/football",
+      "status": 200,
+      "ms": 522
+    },
+    {
+      "path": "/api/football",
+      "status": 200,
+      "ms": 1134
+    },
+    {
+      "path": "/api/football",
+      "status": 200,
+      "ms": 434
+    },
+    {
+      "path": "/api/assets",
+      "status": 201,
+      "ms": 621
+    },
+    {
+      "path": "/api/assets/5ab62c2d-82a5-4697-a411-46ce14c796e2",
+      "status": 200,
+      "ms": 164
+    }
+  ],
+  "programUntouched": true
+}

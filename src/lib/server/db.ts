@@ -21,7 +21,10 @@ export async function getDatabase(): Promise<Database> {
 async function openDatabase(): Promise<Database> {
   let db: Database;
   if (process.env.DATABASE_URL) {
-    const pool = new Pool({ connectionString: process.env.DATABASE_URL_POOLED ?? process.env.DATABASE_URL, max: 4, connectionTimeoutMillis: 5000, idleTimeoutMillis: 10000 });
+    const connection = new URL(process.env.DATABASE_URL_POOLED ?? process.env.DATABASE_URL);
+    // Keep current pg certificate verification explicit across pg-connection-string upgrades.
+    if (['prefer', 'require', 'verify-ca'].includes(connection.searchParams.get('sslmode') ?? '')) connection.searchParams.set('sslmode', 'verify-full');
+    const pool = new Pool({ connectionString: connection.toString(), max: 4, connectionTimeoutMillis: 5000, idleTimeoutMillis: 10000 });
     db = { kind: 'postgres', async query<T extends Row>(sql: string, parameters: Parameter[] = []) { const result = await pool.query(sql, parameters); return { rows: result.rows as T[], rowCount: result.rowCount ?? 0 }; }, close: () => pool.end() };
   } else {
     if (process.env.VERCEL || !process.env.TGIQ_SQLITE_PATH) throw new Error('Connect durable storage: set DATABASE_URL. For local use, run npm run setup:local.');

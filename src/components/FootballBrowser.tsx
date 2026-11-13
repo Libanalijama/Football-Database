@@ -12,7 +12,19 @@ import type {
   Player,
   Match,
 } from "@/lib/football/types";
-import type { Selection } from "@/lib/prepare";
+import {
+  metricOf,
+  dateName,
+  competitionName,
+  seasonName,
+  type Selection,
+} from "@/lib/prepare";
+function displayMetric(m: Parameters<typeof metricOf>[0]) {
+  const x = metricOf(m);
+  return x.value === null
+    ? "Unavailable"
+    : `${x.value}${x.unit ? ` ${x.unit}` : ""}`;
+}
 export async function footballRequest<T>(
   params: Record<string, string | number | undefined>,
   signal?: AbortSignal,
@@ -54,7 +66,11 @@ export function FootballBrowser({
   onSelect,
   refreshKey,
 }: {
-  onPrepare: (s: Selection) => void;
+  onPrepare: (
+    s: Selection,
+    templateId?: string,
+    leaderCategory?: "totalGoals" | "goalAssists",
+  ) => void;
   onCompare: (s: Selection) => void;
   onSelect: (s: Selection) => void;
   refreshKey: number;
@@ -66,6 +82,9 @@ export function FootballBrowser({
   const [selected, setSelected] = useState<Selection | null>(null);
   const [team, setTeam] = useState<TeamData | null>(null);
   const [tab, setTab] = useState("Teams");
+  const [leaderCategory, setLeaderCategory] = useState<
+    "totalGoals" | "goalAssists"
+  >("totalGoals");
   const [query, setQuery] = useState("");
   const [search, setSearch] = useState<SearchData | null>(null);
   const [loading, setLoading] = useState(false);
@@ -376,7 +395,7 @@ export function FootballBrowser({
                 {[
                   ["Position", selected.data.player.position],
                   ["Nationality", selected.data.player.nationality],
-                  ["Date of birth", selected.data.player.birthDate],
+                  ["Date of birth", dateName(selected.data.player.birthDate)],
                   ["Height", selected.data.player.height],
                 ].map(([k, v]) => (
                   <div className="fact" key={k}>
@@ -402,10 +421,7 @@ export function FootballBrowser({
                 {selected.data.statistics.map((m) => (
                   <div className="statline" key={m.key}>
                     <span>{m.label}</span>
-                    <b>
-                      {m.displayValue ?? m.value ?? "Unavailable"}{" "}
-                      {m.unit === "count" || m.unit === "ratio" ? "" : m.unit}
-                    </b>
+                    <b>{displayMetric(m)}</b>
                   </div>
                 ))}
               </div>
@@ -493,15 +509,33 @@ export function FootballBrowser({
                               i === 0 ? p.starter : p.starter === false,
                             )
                             .map((p) => (
-                              <div className="statline" key={p.id}>
-                                <span>
-                                  {p.jersey} · {p.name}
-                                </span>
-                                <small>
-                                  {p.position}
-                                  {p.substituted ? " · Substitution" : ""}
-                                </small>
-                              </div>
+                              <details key={p.id} className="lineup-player">
+                                <summary className="statline">
+                                  <span>
+                                    {p.jersey} · {p.name}
+                                  </span>
+                                  <small>
+                                    {p.position}
+                                    {p.substituted ? " · Substitution" : ""}
+                                  </small>
+                                </summary>
+                                {p.statistics.length ? (
+                                  p.statistics.map((m) => (
+                                    <div className="statline" key={m.key}>
+                                      <span>{m.label}</span>
+                                      <b>{displayMetric(m)}</b>
+                                    </div>
+                                  ))
+                                ) : (
+                                  <small>Player statistics unavailable</small>
+                                )}
+                                <button
+                                  disabled={loading}
+                                  onClick={() => open("player", p.id, l.teamId)}
+                                >
+                                  Open player
+                                </button>
+                              </details>
                             ))}
                         </div>
                       ))}
@@ -518,7 +552,7 @@ export function FootballBrowser({
                       {s.metrics.map((m) => (
                         <div className="statline" key={m.key}>
                           <span>{m.label}</span>
-                          <b>{m.displayValue ?? m.value ?? "Unavailable"}</b>
+                          <b>{displayMetric(m)}</b>
                         </div>
                       ))}
                     </div>
@@ -565,7 +599,7 @@ export function FootballBrowser({
                   selected.data.statistics.map((m) => (
                     <div className="statline" key={m.key}>
                       <span>{m.label}</span>
-                      <b>{m.displayValue ?? m.value ?? "Unavailable"}</b>
+                      <b>{displayMetric(m)}</b>
                     </div>
                   ))}
                 {tab === "Squad" && !selected.data.squad.length && (
@@ -634,27 +668,59 @@ export function FootballBrowser({
                     !["Fixtures", "Leaders"].includes(tab)) &&
                     league.teams.map(teamButton)}
                   {tab === "Fixtures" && league.matches.map(matchButton)}
-                  {tab === "Leaders" &&
-                    league.leaders.map((l, i) => (
+                  {tab === "Leaders" && (
+                    <div className="toolbar">
+                      <label>
+                        Metric
+                        <select
+                          aria-label="Leaderboard metric"
+                          value={leaderCategory}
+                          onChange={(e) =>
+                            setLeaderCategory(
+                              e.target.value as "totalGoals" | "goalAssists",
+                            )
+                          }
+                        >
+                          <option value="totalGoals">Goals</option>
+                          <option value="goalAssists">Assists</option>
+                        </select>
+                      </label>
                       <button
-                        className="entity"
-                        key={`${l.category}:${l.player.id}:${i}`}
                         onClick={() =>
-                          open("player", l.player.id, l.player.team?.id)
+                          onPrepare(
+                            { kind: "league", data: league },
+                            "ranking-players",
+                            leaderCategory,
+                          )
                         }
                       >
-                        <span className="index">{l.rank}</span>
-                        <span>
-                          <b>{l.player.name}</b>
-                          <small>
-                            {l.label} · {l.player.team?.name}
-                          </small>
-                        </span>
-                        <strong className="score-badge">
-                          {l.displayValue ?? l.value ?? "–"}
-                        </strong>
+                        Prepare leaderboard
                       </button>
-                    ))}
+                    </div>
+                  )}
+                  {tab === "Leaders" &&
+                    league.leaders
+                      .filter((l) => l.category === leaderCategory)
+                      .map((l, i) => (
+                        <button
+                          className="entity"
+                          key={`${l.category}:${l.player.id}:${i}`}
+                          onClick={() =>
+                            open("player", l.player.id, l.player.team?.id)
+                          }
+                        >
+                          <span className="index">{l.rank}</span>
+                          <span>
+                            <b>{l.player.name}</b>
+                            <small>
+                              {l.label} · {l.player.team?.name}
+                            </small>
+                          </span>
+                          <strong className="score-badge">
+                            {l.displayValue ?? l.value ?? "–"}
+                          </strong>
+                        </button>
+                      ))}
                   {tab === "Leaders" && !league.leaders.length && (
                     <div className="empty">Leaders unavailable</div>
                   )}
@@ -674,8 +740,10 @@ export function FootballBrowser({
             <details>
               <summary className="source-note">Coverage & source</summary>
               <p className="source-note">
-                ESPN · {current.data.provenance.competition} ·{" "}
-                {current.data.provenance.season ?? "Current"} · Retrieved{" "}
+                ESPN · {competitionName(current.data.provenance.competition)} ·{" "}
+                {seasonName(current.data.provenance.season) ??
+                  "Current profile"}{" "}
+                · Retrieved{" "}
                 {new Date(current.data.provenance.retrievedAt).toLocaleString(
                   "en-GB",
                   { timeZone: "Europe/London" },
@@ -683,7 +751,10 @@ export function FootballBrowser({
               </p>
               {Object.entries(current.data.capabilities).map(([k, v]) => (
                 <p key={k} className="source-note">
-                  {k}: {v.available ? "Available" : (v.reason ?? "Unavailable")}
+                  {k
+                    .replace(/([a-z])([A-Z])/g, "$1 $2")
+                    .replace(/^./, (c) => c.toUpperCase())}
+                  : {v.available ? "Available" : (v.reason ?? "Unavailable")}
                 </p>
               ))}
               <a

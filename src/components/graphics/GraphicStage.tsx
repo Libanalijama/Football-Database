@@ -7,7 +7,7 @@ import { groupScorers, runningScores } from '@/lib/graphics/scorekeeping';
 import './graphics.css';
 
 function value(v:string|number|null|undefined, unit?:string) { return v===null||v===undefined||v===''?'Unavailable':`${v}${unit?` ${unit}`:''}`; }
-function numberSize(text:string,size:number):CSSProperties {return {fontSize:Math.max(size*.32,Math.min(size,size*6/Math.max(6,Array.from(text).length)))}}
+function numberSize(text:string,size:number):CSSProperties {return text==='Unavailable'?{fontSize:size*.32,whiteSpace:'nowrap'}:{fontSize:Math.max(size*.32,Math.min(size,size*6/Math.max(6,Array.from(text).length)))}}
 function present(v:string|number|null|undefined) { return v!==null&&v!==undefined&&v!==''; }
 function field(g:GraphicDocument,key:string) { const v=g.fields[key];return present(v)?String(v):''; }
 function pageItems<T>(items:T[],g:GraphicDocument,max:number) { const p=Math.min(g.page,Math.max(0,Math.ceil(items.length/max)-1));return items.slice(p*max,p*max+max); }

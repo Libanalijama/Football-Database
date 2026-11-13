@@ -1,7 +1,9 @@
 import { chromium } from "@playwright/test";
 import fs from "node:fs/promises";
 const BASE = process.env.TGIQ_TEST_URL || "http://localhost:3001";
-const access = JSON.parse(await fs.readFile(".data/local-access.json", "utf8"));
+const accessPath = process.env.TGIQ_TEST_ACCESS || ".data/local-access.json";
+const evidencePrefix = process.env.TGIQ_EVIDENCE_PREFIX || "";
+const access = JSON.parse(await fs.readFile(accessPath, "utf8"));
 const browser = await chromium.launch({ headless: true });
 const context = await browser.newContext({
   baseURL: BASE,
@@ -10,7 +12,7 @@ const context = await browser.newContext({
 const page = await context.newPage();
 const errors = [];
 page.on("pageerror", (e) => errors.push(e.message));
-const result = { checks: [], errors };
+const result = { target: BASE, checkedAt: new Date().toISOString(), checks: [], errors };
 function check(name, value) {
   result.checks.push({ name, pass: Boolean(value) });
   if (!value) throw Error(name);
@@ -18,7 +20,12 @@ function check(name, value) {
 try {
   await page.goto(BASE);
   await page.getByLabel("Producer password").fill(access.producerPassword);
+  const loginStarted = Date.now();
+  const loginResponse = page.waitForResponse(r => r.url().endsWith('/api/session') && r.request().method() === 'POST', { timeout: 60000 });
   await page.getByRole("button", { name: "Sign in", exact: true }).click();
+  const signedIn = await loginResponse;
+  result.signInMs = Date.now() - loginStarted;
+  check('Producer signs in', signedIn.ok());
   await page
     .getByRole("button", { name: /^Arsenal English Premier League/ })
     .waitFor({ timeout: 30000 });
@@ -76,7 +83,7 @@ try {
     .filter({ hasText: "Bukayo Saka" })
     .waitFor({ timeout: 15000 });
   await output.screenshot({
-    path: "docs/output-profile.png",
+    path: `docs/${evidencePrefix}output-profile.png`,
     omitBackground: true,
   });
   check(
@@ -166,7 +173,7 @@ try {
     .first()
     .waitFor({ timeout: 15000 });
   await output.screenshot({
-    path: "docs/output-comparison.png",
+    path: `docs/${evidencePrefix}output-comparison.png`,
     omitBackground: true,
   });
   const timing = await output.evaluate(() =>
@@ -174,7 +181,7 @@ try {
   );
   result.outputSwitchMs = timing;
   await page.screenshot({
-    path: "docs/workspace-populated.png",
+    path: `docs/${evidencePrefix}workspace-populated.png`,
     fullPage: true,
   });
   const episodeId = await page.getByLabel("Open episode").inputValue();
@@ -201,8 +208,8 @@ try {
   const downloadPromise = page.waitForEvent('download');
   await page.getByRole('button', { name: 'Export', exact: true }).click();
   const download = await downloadPromise;
-  await download.saveAs('.data/verification-export.json');
-  const exported = JSON.parse(await fs.readFile('.data/verification-export.json', 'utf8'));
+  await download.saveAs(`.data/${evidencePrefix}verification-export.json`);
+  const exported = JSON.parse(await fs.readFile(`.data/${evidencePrefix}verification-export.json`, 'utf8'));
   check('Episode UI exports portable JSON', exported.schemaVersion === before.episode.schemaVersion && exported.items.length === before.episode.items.length);
   const importRes = await context.request.post("/api/episodes", {
     headers: { "x-tgiq-csrf": "1" },
@@ -231,11 +238,11 @@ try {
   check("No browser runtime errors", errors.length === 0);
 } catch (error) {
   result.failure = String(error);
-  await page.screenshot({ path: "docs/browser-failure.png", fullPage: true });
+  await page.screenshot({ path: `docs/${evidencePrefix}browser-failure.png`, fullPage: true });
   process.exitCode = 1;
 }
 await fs.writeFile(
-  "docs/browser-results.json",
+  `docs/${evidencePrefix}browser-results.json`,
   JSON.stringify(result, null, 2),
 );
 console.log(result);

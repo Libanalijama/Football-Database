@@ -1,0 +1,230 @@
+{
+  "target": "https://tgiq-football-database.vercel.app",
+  "checkedAt": "2026-11-12T23:59:28.742Z",
+  "cacheInspection": "SELECT-only on the configured remote PostgreSQL provider_cache; no deletion or entity insertion",
+  "checks": [
+    {
+      "name": "Producer signs in",
+      "pass": true
+    },
+    {
+      "name": "ESPN requires no key and both paid providers are absent",
+      "pass": true
+    },
+    {
+      "name": "Fulham roster was absent from durable source cache before selection",
+      "pass": true
+    },
+    {
+      "name": "Fulham team and squad retrieved successfully",
+      "pass": true
+    },
+    {
+      "name": "Fulham dynamically selected player belongs to returned roster",
+      "pass": true
+    },
+    {
+      "name": "Fulham player profile and overview were uncached before opening",
+      "pass": true
+    },
+    {
+      "name": "Fulham player identity and team match the selected provider IDs",
+      "pass": true
+    },
+    {
+      "name": "Fulham uncached player populates the reusable profile",
+      "pass": true
+    },
+    {
+      "name": "Fulham successful provider responses were cached after first use",
+      "pass": true
+    },
+    {
+      "name": "Valencia roster was absent from durable source cache before selection",
+      "pass": true
+    },
+    {
+      "name": "Valencia team and squad retrieved successfully",
+      "pass": true
+    },
+    {
+      "name": "Valencia dynamically selected player belongs to returned roster",
+      "pass": true
+    },
+    {
+      "name": "Valencia player profile and overview were uncached before opening",
+      "pass": true
+    },
+    {
+      "name": "Valencia player identity and team match the selected provider IDs",
+      "pass": true
+    },
+    {
+      "name": "Valencia uncached player populates the reusable profile",
+      "pass": true
+    },
+    {
+      "name": "Valencia successful provider responses were cached after first use",
+      "pass": true
+    },
+    {
+      "name": "No entities, episodes, assets or program state manually created or mutated",
+      "pass": true
+    },
+    {
+      "name": "No browser runtime errors",
+      "pass": true
+    }
+  ],
+  "subjects": [
+    {
+      "competition": "eng.1",
+      "teamId": "370",
+      "teamName": "Fulham",
+      "checkedAt": "2026-11-12T23:59:29.577Z",
+      "season": "2026",
+      "rosterCacheBefore": [],
+      "rosterHttpStatus": 200,
+      "squadSize": 29,
+      "rosterProvenance": {
+        "provider": "espn",
+        "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/teams/370/roster?season=2026",
+        "retrievedAt": "2026-11-12T23:59:30.728Z",
+        "competition": "eng.1",
+        "season": 2026,
+        "scope": "current-squad",
+        "teamId": "370"
+      },
+      "playerId": "149517",
+      "playerCacheBefore": [],
+      "playerHttpStatus": 200,
+      "playerName": "Benjamin Lecomte",
+      "photoAvailable": false,
+      "statisticCount": 15,
+      "profileProvenance": {
+        "provider": "espn",
+        "sourceUrl": "https://site.web.api.espn.com/apis/common/v3/sports/soccer/eng.1/athletes/149517",
+        "retrievedAt": "2026-11-12T23:59:31.368Z",
+        "competition": "eng.1",
+        "season": null,
+        "scope": "current-profile"
+      },
+      "statisticsProvenance": {
+        "provider": "espn",
+        "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/teams/370/roster?season=2026",
+        "retrievedAt": "2026-11-12T23:59:30.728Z",
+        "competition": "eng.1",
+        "season": 2026,
+        "scope": "competition-season",
+        "teamId": "370"
+      },
+      "rosterCacheAfter": [
+        {
+          "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/teams/370/roster?season=2026",
+          "createdAt": "2026-11-12T23:59:30.728Z",
+          "expiresAt": "2026-11-13T00:04:30.728Z",
+          "retrievedAt": "2026-11-12T23:59:30.728Z"
+        }
+      ],
+      "playerCacheAfter": [
+        {
+          "sourceUrl": "https://site.web.api.espn.com/apis/common/v3/sports/soccer/eng.1/athletes/149517",
+          "createdAt": "2026-11-12T23:59:31.368Z",
+          "expiresAt": "2026-11-13T00:59:31.368Z",
+          "retrievedAt": "2026-11-12T23:59:31.368Z"
+        },
+        {
+          "sourceUrl": "https://site.web.api.espn.com/apis/common/v3/sports/soccer/eng.1/athletes/149517/overview?season=2026",
+          "createdAt": "2026-11-12T23:59:31.564Z",
+          "expiresAt": "2026-11-13T00:04:31.564Z",
+          "retrievedAt": "2026-11-12T23:59:31.564Z"
+        }
+      ]
+    },
+    {
+      "competition": "esp.1",
+      "teamId": "94",
+      "teamName": "Valencia",
+      "checkedAt": "2026-11-12T23:59:31.934Z",
+      "season": "2026",
+      "rosterCacheBefore": [],
+      "rosterHttpStatus": 200,
+      "squadSize": 34,
+      "rosterProvenance": {
+        "provider": "espn",
+        "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/soccer/esp.1/teams/94/roster?season=2026",
+        "retrievedAt": "2026-11-12T23:59:32.412Z",
+        "competition": "esp.1",
+        "season": 2026,
+        "scope": "current-squad",
+        "teamId": "94"
+      },
+      "playerId": "76884",
+      "playerCacheBefore": [],
+      "playerHttpStatus": 200,
+      "playerName": "Cristian Rivero",
+      "photoAvailable": false,
+      "statisticCount": 15,
+      "profileProvenance": {
+        "provider": "espn",
+        "sourceUrl": "https://site.web.api.espn.com/apis/common/v3/sports/soccer/esp.1/athletes/76884",
+        "retrievedAt": "2026-11-12T23:59:33.516Z",
+        "competition": "esp.1",
+        "season": null,
+        "scope": "current-profile"
+      },
+      "statisticsProvenance": {
+        "provider": "espn",
+        "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/soccer/esp.1/teams/94/roster?season=2026",
+        "retrievedAt": "2026-11-12T23:59:32.412Z",
+        "competition": "esp.1",
+        "season": 2026,
+        "scope": "competition-season",
+        "teamId": "94"
+      },
+      "rosterCacheAfter": [
+        {
+          "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/soccer/esp.1/teams/94/roster?season=2026",
+          "createdAt": "2026-11-12T23:59:32.412Z",
+          "expiresAt": "2026-11-13T00:04:32.412Z",
+          "retrievedAt": "2026-11-12T23:59:32.412Z"
+        }
+      ],
+      "playerCacheAfter": [
+        {
+          "sourceUrl": "https://site.web.api.espn.com/apis/common/v3/sports/soccer/esp.1/athletes/76884",
+          "createdAt": "2026-11-12T23:59:33.516Z",
+          "expiresAt": "2026-11-13T00:59:33.516Z",
+          "retrievedAt": "2026-11-12T23:59:33.516Z"
+        },
+        {
+          "sourceUrl": "https://site.web.api.espn.com/apis/common/v3/sports/soccer/esp.1/athletes/76884/overview?season=2026",
+          "createdAt": "2026-11-12T23:59:33.431Z",
+          "expiresAt": "2026-11-13T00:04:33.431Z",
+          "retrievedAt": "2026-11-12T23:59:33.431Z"
+        }
+      ]
+    }
+  ],
+  "browserErrors": [],
+  "providerStatus": {
+    "default": "espn",
+    "espn": {
+      "configured": true,
+      "keyRequired": false
+    },
+    "optional": [
+      {
+        "id": "api-football",
+        "configured": false,
+        "status": "Not configured"
+      },
+      {
+        "id": "sportmonks",
+        "configured": false,
+        "status": "Not configured"
+      }
+    ]
+  },
+  "mutations": []
+}

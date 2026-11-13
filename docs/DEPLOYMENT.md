@@ -1,6 +1,6 @@
 # Deployment status
 
-The application has not been deployed to a cloud URL. Local production build and browser evidence are recorded separately in `BUILD_EVIDENCE.md`.
+The application is deployed at https://tgiq-football-database.vercel.app. Deployment `dpl_DnVgFGxst1RbhLbagAmhso1NKsod` is READY on reviewed source commit `3b09a062dedf1dc9585c60af19a8deca041b2c96`. It built in 25 seconds in the deployment logs and runs in `fra1`. Further live browser evidence and the final verification commit are recorded separately in `BUILD_EVIDENCE.md`.
 
 ## Authorized infrastructure
 
@@ -12,7 +12,7 @@ The dedicated Free Prisma Postgres resource is connected only to TGIQ production
 
 A dedicated **private** Blob store `tgiq-football-media` (`store_73R6HR9rQBRdjB7Z`) was created in `fra1` and connected only to TGIQ. The app uploads privately, stores origin/rights metadata in PostgreSQL, and streams images only after producer/output authentication. Five actual authenticated checks passed; see `BLOB_VERIFICATION.json`. Direct public object access was verified to fail.
 
-Vercel CLI 65.15.0 and connected plugin reads verified resource identity, ownership, billing plans and configuration. This configuration alone is not a successful application deployment; deployment readiness and live checks must be recorded below once complete.
+Vercel CLI 65.15.0 and connected plugin reads verified resource identity, ownership, billing plans and configuration. Actual application deployment readiness and live checks are recorded below and in the linked verification reports.
 
 ## Database provisioning investigation
 
@@ -36,7 +36,7 @@ Issued connection settings were saved privately in ignored `.env.production.loca
 
 Authenticated verification succeeded with **14 checks**: the live PostgreSQL connection; schema migration 1; episode snapshots, overrides, null/zero and missing-media reporting; JSON roundtrip; episode duplication; stale episode rejection; program take; concurrent version compare-and-swap; freeze without provider calls; connection reopen; revocable token digests; persistent media bytes/metadata; independent provider cache; and deliberate clear. See `POSTGRES_VERIFICATION.json`. The verification script removes only its test rows; the cloud program is left deliberately blank/frozen. The database is durable/claimed, not an expiring temporary unclaimed database. Free-tier limits and lack of automatic backups still apply.
 
-The dedicated private Blob store is now provisioned and verified. The cloud **application hosting deployment** is pending the reviewed source push/build and live checks.
+The dedicated private Blob store is now provisioned and verified. The cloud **application hosting deployment** is READY. Nine actual HTTP checks passed on the public production alias: PostgreSQL/Blob health, production login, producer authorization, two-competition ESPN team/roster/player discovery, deployed private image upload/stream, unauthenticated image denial and program mutation denial. See `LIVE_HTTP_VERIFICATION.json`. The smoke check did not alter program state or rotate output access. The generated `-frmx` and deployment aliases remain protected by Vercel Authentication, while the stable production alias reaches the app own producer/output authentication. No Deployment Protection setting was weakened.
 
 Official product references: [Prisma Postgres](https://www.prisma.io/docs/postgres), [Prisma pricing](https://www.prisma.io/pricing), [Neon plans](https://neon.com/docs/introduction/plans).
 

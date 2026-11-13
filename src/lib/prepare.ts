@@ -1,9 +1,9 @@
-import {
-  createGraphic,
-  type GraphicDocument,
-  type GraphicSubject,
-  type GraphicMetric,
-} from "@/lib/graphics";
+import { createGraphic } from "@/lib/graphics/registry";
+import type {
+  GraphicDocument,
+  GraphicSubject,
+  GraphicMetric,
+} from "@/lib/graphics/schema";
 import type {
   PlayerData,
   TeamData,
@@ -176,6 +176,7 @@ export function prepareSelection(
   selection: Selection,
   templateId?: string,
   existing?: GraphicDocument,
+  leaderCategory: "totalGoals" | "goalAssists" = "totalGoals",
 ): GraphicDocument {
   const defaultId = {
     player: "profile-player",
@@ -229,6 +230,8 @@ export function prepareSelection(
     d.fields.Columns = "P,W,D,L,GD,PTS";
     d.rows = league.standings.map((s) => ({
       label: s.team.name,
+      subjectId: `espn:team:${s.team.id}`,
+      provenance: s.provenance,
       rank: s.rank,
       image: s.team.crest ?? undefined,
       columns: [s.played, s.won, s.drawn, s.lost, s.goalDifference, s.points],
@@ -243,15 +246,17 @@ export function prepareSelection(
       )
       .join(" · ");
     if (d.templateId === "ranking-players") {
-      d.title = `${league.competition.name} · Goals`;
+      d.title = `${league.competition.name} · ${leaderCategory === "goalAssists" ? "Assists" : "Goals"}`;
       d.fields.Columns = null;
-      d.fields.Metric = "Goals";
+      d.fields.Metric = leaderCategory === "goalAssists" ? "Assists" : "Goals";
       d.fields.Units = null;
-      d.fields.Ties = "Shared ranks for equal goals";
+      d.fields.Ties = "Shared ranks for equal values";
       d.rows = league.leaders
-        .filter((l) => l.category === "totalGoals")
+        .filter((l) => l.category === leaderCategory)
         .map((l) => ({
           label: l.player.name,
+          subjectId: `espn:player:${l.player.id}`,
+          provenance: l.provenance,
           rank: l.rank,
           value: l.value,
           note: l.player.team?.name,
@@ -344,52 +349,89 @@ export function retargetGraphicScope(
   // previous source snapshot stays available for override comparison and undo.
   const target = createGraphic(templateId, {
     ...structuredClone(graphic),
-    templateId: templateId as GraphicDocument['templateId'],
+    templateId: templateId as GraphicDocument["templateId"],
   });
-  const isProfile = templateId.startsWith('profile-');
-  const wasProfile = graphic.templateId.startsWith('profile-');
+  const isProfile = templateId.startsWith("profile-");
+  const wasProfile = graphic.templateId.startsWith("profile-");
   const statistical = (scope: Provenance | undefined) =>
-    scope && scope.scope !== 'current-profile' ? scope : undefined;
-  const statsScope = statistical(graphic.metrics.find(m => statistical(m.provenance))?.provenance)
-    ?? statistical(graphic.subjects[0]?.provenance);
-  const bioScope = graphic.subjects[0]?.facts?.find(f => f.provenance?.scope === 'current-profile')?.provenance
-    ?? (graphic.subjects[0]?.provenance?.scope === 'current-profile' ? graphic.subjects[0].provenance : undefined);
+    scope && scope.scope !== "current-profile" ? scope : undefined;
+  const statsScope =
+    statistical(
+      graphic.metrics.find((m) => statistical(m.provenance))?.provenance,
+    ) ?? statistical(graphic.subjects[0]?.provenance);
+  const bioScope =
+    graphic.subjects[0]?.facts?.find(
+      (f) => f.provenance?.scope === "current-profile",
+    )?.provenance ??
+    (graphic.subjects[0]?.provenance?.scope === "current-profile"
+      ? graphic.subjects[0].provenance
+      : undefined);
   const nextScope = isProfile ? bioScope : statsScope;
   const oldScope = wasProfile ? bioScope : statsScope;
   if (nextScope) {
     const oldBase = oldScope ? sourceOf(oldScope) : null;
-    const nextBase = sourceOf(isProfile ? { ...nextScope, season: null, scope: 'current-profile' } : nextScope);
+    const nextBase = sourceOf(
+      isProfile
+        ? { ...nextScope, season: null, scope: "current-profile" }
+        : nextScope,
+    );
     target.source = { ...target.source, ...nextBase };
     // Source attribution/URL/reporting-period edits are independent editorial
     // overrides. Changing the layout must not silently erase them.
-    for (const key of ['url', 'attribution', 'reportingPeriod', 'provider'] as const) {
+    for (const key of [
+      "url",
+      "attribution",
+      "reportingPeriod",
+      "provider",
+    ] as const) {
       const current = graphic.source[key];
-      if (current !== undefined && oldBase && current !== oldBase[key]) target.source[key] = current;
+      if (current !== undefined && oldBase && current !== oldBase[key])
+        target.source[key] = current;
     }
-    const oldCaption = wasProfile && bioScope
-      ? 'Current profile'
-      : [graphic.source.competition, graphic.source.season].filter(Boolean).join(' · ');
-    if (graphic.subtitle === oldCaption || graphic.subtitle === '') {
-      target.subtitle = isProfile ? 'Current profile' : [nextBase.competition, nextBase.season].filter(Boolean).join(' · ');
+    const oldCaption =
+      wasProfile && bioScope
+        ? "Current profile"
+        : [graphic.source.competition, graphic.source.season]
+            .filter(Boolean)
+            .join(" · ");
+    if (graphic.subtitle === oldCaption || graphic.subtitle === "") {
+      target.subtitle = isProfile
+        ? "Current profile"
+        : [nextBase.competition, nextBase.season].filter(Boolean).join(" · ");
     }
   }
   target.subjects = target.subjects.map((subject, index) => {
-    const subjectStats = statistical(index === 0 ? statsScope : graphic.metrics.find(m => statistical(m.otherProvenance))?.otherProvenance)
-      ?? statistical(subject.provenance);
-    const subjectBio = subject.facts?.find(f => f.provenance?.scope === 'current-profile')?.provenance
-      ?? (subject.provenance?.scope === 'current-profile' ? subject.provenance : undefined);
+    const subjectStats =
+      statistical(
+        index === 0
+          ? statsScope
+          : graphic.metrics.find((m) => statistical(m.otherProvenance))
+              ?.otherProvenance,
+      ) ?? statistical(subject.provenance);
+    const subjectBio =
+      subject.facts?.find((f) => f.provenance?.scope === "current-profile")
+        ?.provenance ??
+      (subject.provenance?.scope === "current-profile"
+        ? subject.provenance
+        : undefined);
     if (isProfile && subjectBio) {
-      subject.provenance = structuredClone({ ...subjectBio, season: null, scope: 'current-profile' });
+      subject.provenance = structuredClone({
+        ...subjectBio,
+        season: null,
+        scope: "current-profile",
+      });
       subject.competition = undefined;
       subject.season = undefined;
       const period = subjectStats ? seasonName(subjectStats.season) : undefined;
-      if (subject.team && period && !subject.team.endsWith(` · ${period}`)) subject.team = `${subject.team} · ${period}`;
+      if (subject.team && period && !subject.team.endsWith(` · ${period}`))
+        subject.team = `${subject.team} · ${period}`;
     } else if (!isProfile && subjectStats) {
       subject.provenance = structuredClone(subjectStats);
       subject.competition = competitionName(subjectStats.competition);
       subject.season = seasonName(subjectStats.season);
       const suffix = subject.season ? ` · ${subject.season}` : null;
-      if (subject.team && suffix && subject.team.endsWith(suffix)) subject.team = subject.team.slice(0, -suffix.length);
+      if (subject.team && suffix && subject.team.endsWith(suffix))
+        subject.team = subject.team.slice(0, -suffix.length);
     }
     return subject;
   });
