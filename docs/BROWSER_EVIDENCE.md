@@ -18,7 +18,7 @@ Result files: `docs/browser-results.json`, `docs/browser-match-results.json`. Sc
 Both scripts accept:
 
 - `TGIQ_TEST_URL`: target application origin; defaults to `http://localhost:3001`.
-- `TGIQ_TEST_ACCESS`: private JSON file containing `producerPassword`; defaults to `.data/local-access.json`.
+- `TGIQ_TEST_ACCESS`: optional private JSON file containing `producerPassword`, used only when a target is explicitly configured for password mode. Open-mode verification does not require or read this file.
 - `TGIQ_EVIDENCE_PREFIX`: artifact filename prefix such as `live-`; defaults to empty. This preserves local and deployed evidence separately.
 
 Run them **sequentially**, because each rotates read-only output access. A successful deployment is verified separately; local test results do not establish a deployed service is live.
@@ -49,3 +49,8 @@ The new assists selector filtered actual ESPN assists records and prepared a 50-
 Alt+Enter while typing made no program mutation. A deliberately broken portrait prevented Take Live, showed the problem only to the producer and retained the existing program snapshot. Removing that broken reference allowed a valid prepared profile to take live in an independent output session. Sign-in returned **200 in 227ms**; recorded output state-receipt-to-render timings were **110.1ms initial** and **57.9ms prepared switch**. After output access was revoked, the old output became blank, made **one** unauthorized fallback request and made no further unauthorized requests during an additional **3.5-second** observation, confirming the retry loop stopped.
 
 Evidence: `docs/final-browser-results.json`, `final-assists-output.png`, `final-lineup-player-statistics.png`, `final-broken-image-control.png`, `final-output-profile.png`, `final-source-ui.png`. All test browser contexts were closed before the producer's review episode/output cleanup.
+
+
+## No-password producer access
+
+The current browser scripts share `scripts/browser-access.mjs`. It requests `/api/session` using the producer browser context, which accepts the signed session cookie in open mode, and then opens the workspace without reading any credentials file. If a separately configured target explicitly requires password access, the helper uses the optional `TGIQ_TEST_ACCESS` file. Read-only output and unauthenticated test contexts deliberately do not call this helper. Earlier sign-in timings in this evidence describe the historical password-mode runs; the no-password deployment has its own fresh-browser verification. `TGIQ_TEST_COMMIT` can record the exact deployed source in the final smoke report; an omitted value is recorded as null rather than guessing a commit.

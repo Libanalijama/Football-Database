@@ -1,9 +1,9 @@
 import { chromium } from "@playwright/test";
 import fs from "node:fs/promises";
+import { enterProducer } from "./browser-access.mjs";
 const BASE = process.env.TGIQ_TEST_URL || "http://localhost:3001";
 const accessPath = process.env.TGIQ_TEST_ACCESS || ".data/local-access.json";
 const evidencePrefix = process.env.TGIQ_EVIDENCE_PREFIX || "";
-const access = JSON.parse(await fs.readFile(accessPath, "utf8"));
 const browser = await chromium.launch({ headless: true });
 const context = await browser.newContext({
   baseURL: BASE,
@@ -18,14 +18,9 @@ function check(name, value) {
   if (!value) throw Error(name);
 }
 try {
-  await page.goto(BASE);
-  await page.getByLabel("Producer password").fill(access.producerPassword);
-  const loginStarted = Date.now();
-  const loginResponse = page.waitForResponse(r => r.url().endsWith('/api/session') && r.request().method() === 'POST', { timeout: 60000 });
-  await page.getByRole("button", { name: "Sign in", exact: true }).click();
-  const signedIn = await loginResponse;
-  result.signInMs = Date.now() - loginStarted;
-  check('Producer signs in', signedIn.ok());
+  result.access = await enterProducer(page, { baseURL: BASE, accessPath });
+  result.sessionMs = result.access.elapsedMs;
+  check('Producer workspace opens', result.access.authenticated);
   await page
     .getByRole("button", { name: /^Arsenal English Premier League/ })
     .waitFor({ timeout: 30000 });

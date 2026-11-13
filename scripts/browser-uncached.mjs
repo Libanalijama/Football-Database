@@ -1,13 +1,14 @@
 /** Read-only cache inspection plus first-use UI browsing. Never clears source caches. */
 import { chromium } from '@playwright/test';
 import fs from 'node:fs/promises';
+import { enterProducer } from './browser-access.mjs';
 import pg from 'pg';
 const BASE = process.env.TGIQ_TEST_URL || 'https://tgiq-football-database.vercel.app';
 const accessPath = process.env.TGIQ_TEST_ACCESS || '.data/production-access.json';
 const prefix = process.env.TGIQ_EVIDENCE_PREFIX || 'live-';
-const access = JSON.parse(await fs.readFile(accessPath, 'utf8'));
-if (!process.env.DATABASE_URL) throw Error('Load the target database environment before inspecting its source cache.');
-const pool = new pg.Pool({ connectionString: process.env.DATABASE_URL_POOLED ?? process.env.DATABASE_URL, max: 1, connectionTimeoutMillis: 5000 });
+const connectionString = process.env.DATABASE_URL_UNPOOLED || process.env.DATABASE_URL || process.env.DATABASE_URL_POOLED;
+if (!connectionString) throw Error('Load the target database environment before inspecting its source cache.');
+const pool = new pg.Pool({ connectionString, max: 1, connectionTimeoutMillis: 5000 });
 const browser = await chromium.launch({ headless: true });
 const context = await browser.newContext({ baseURL: BASE, viewport: { width: 1600, height: 1080 } });
 const page = await context.newPage();
@@ -22,11 +23,8 @@ async function cacheRows(pattern) {
 }
 const isFootball = (r, kind, id) => { const u = new URL(r.url()); return u.pathname === '/api/football' && u.searchParams.get('kind') === kind && u.searchParams.get('id') === id; };
 try {
- await page.goto(BASE);
- await page.getByLabel('Producer password').fill(access.producerPassword);
- const signedIn = page.waitForResponse(r => r.url().endsWith('/api/session') && r.request().method() === 'POST', { timeout: 60000 });
- await page.getByRole('button', { name: 'Sign in', exact: true }).click();
- check('Producer signs in', (await signedIn).ok());
+ result.access = await enterProducer(page, { baseURL: BASE, accessPath });
+ check('Producer workspace opens', result.access.authenticated);
  const status = await context.request.get('/api/football?kind=status').then(r => r.json());
  result.providerStatus = status.data;
  check('ESPN requires no key and both paid providers are absent', status.data.espn.keyRequired === false && status.data.optional.every(p => !p.configured));

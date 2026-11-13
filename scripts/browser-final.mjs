@@ -1,9 +1,9 @@
 import { chromium } from '@playwright/test';
 import fs from 'node:fs/promises';
+import { enterProducer } from './browser-access.mjs';
 const BASE = process.env.TGIQ_TEST_URL || 'https://tgiq-football-database.vercel.app';
 const accessPath = process.env.TGIQ_TEST_ACCESS || '.data/production-access.json';
-const expectedCommit = process.env.TGIQ_TEST_COMMIT || '202e339002785490e54761a7fc9535468100d220';
-const access = JSON.parse(await fs.readFile(accessPath, 'utf8'));
+const expectedCommit = process.env.TGIQ_TEST_COMMIT || null;
 const browser = await chromium.launch({ headless: true });
 const context = await browser.newContext({ baseURL: BASE, viewport: { width: 1600, height: 1080 } });
 const page = await context.newPage();
@@ -16,15 +16,9 @@ const footballResponse = (r, kind) => { const u = new URL(r.url()); return u.pat
 const program = async () => context.request.get('/api/program').then(r => r.json());
 let outputContext;
 try {
- await page.goto(BASE);
- await page.getByLabel('Producer password').fill(access.producerPassword);
  const leagueResponse = page.waitForResponse(r => footballResponse(r, 'league') && r.status() === 200, { timeout: 60000 }).catch(error => ({ waitFailure: String(error) }));
- const signInStarted = Date.now();
- const signIn = page.waitForResponse(r => r.url().endsWith('/api/session') && r.request().method() === 'POST', { timeout: 60000 });
- await page.getByRole('button', { name: 'Sign in', exact: true }).click();
- const signInResponse = await signIn;
- result.signIn = { status: signInResponse.status(), elapsedMs: Date.now() - signInStarted, ...(signInResponse.ok() ? {} : { responseExcerpt: (await signInResponse.text()).slice(0,240) }) };
- check('Final deployment producer signs in', signInResponse.ok());
+ result.access = await enterProducer(page, { baseURL: BASE, accessPath });
+ check('Final deployment producer workspace opens', result.access.authenticated);
  const leagueHttp = await leagueResponse;
  if ('waitFailure' in leagueHttp) throw Error(leagueHttp.waitFailure);
  const initialLeague = (await leagueHttp.json()).data;
