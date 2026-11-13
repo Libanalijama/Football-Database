@@ -1,0 +1,56 @@
+{
+  "verifiedAt": "2026-11-13T00:23:30.696Z",
+  "deployment": {
+    "id": "dpl_25dxXGiWxg4PQkhZaEUtcxeZ3tQr",
+    "state": "READY",
+    "commit": "dce79d3870d5ec4dc37afd5e14c2c0c620733125",
+    "nodeVersion": "24.x",
+    "regions": [
+      "fra1"
+    ],
+    "buildToReadyMs": 21514,
+    "url": "https://tgiq-football-database.vercel.app"
+  },
+  "health": [
+    {
+      "attempt": 1,
+      "status": 200,
+      "ready": true,
+      "ms": 534,
+      "media": true
+    },
+    {
+      "attempt": 2,
+      "status": 200,
+      "ready": true,
+      "ms": 53,
+      "media": true
+    },
+    {
+      "attempt": 3,
+      "status": 200,
+      "ready": true,
+      "ms": 51,
+      "media": true
+    }
+  ],
+  "runtimeScan": {
+    "levels": [
+      "error",
+      "fatal",
+      "warning"
+    ],
+    "windowStart": "2026-11-13T00:08:14.587Z",
+    "windowEnd": "2026-11-13T00:23:14.587Z",
+    "result": "No logs found for the specified criteria.",
+    "entries": 0
+  },
+  "githubCI": {
+    "id": 43336455452,
+    "headSha": "dce79d3870d5ec4dc37afd5e14c2c0c620733125",
+    "status": "completed",
+    "conclusion": "success",
+    "url": "https://github.com/Libanalijama/Football-Database/actions/runs/43336455452"
+  },
+  "programUntouched": true
+}

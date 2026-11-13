@@ -1,0 +1,125 @@
+{
+  "target": "https://tgiq-football-database.vercel.app",
+  "expectedCommit": "dce79d3870d5ec4dc37afd5e14c2c0c620733125",
+  "checkedAt": "2026-11-13T00:22:37.153Z",
+  "checks": [
+    {
+      "name": "Final deployment producer signs in",
+      "pass": true
+    },
+    {
+      "name": "ESPN returned separate assists leader records",
+      "pass": true
+    },
+    {
+      "name": "Assists selector filters actual remote rows",
+      "pass": true
+    },
+    {
+      "name": "Prepared leaderboard retains assists category",
+      "pass": true
+    },
+    {
+      "name": "Prepared assists values match ESPN rather than goal totals",
+      "pass": true
+    },
+    {
+      "name": "Alt+Enter while typing does not change program",
+      "pass": true
+    },
+    {
+      "name": "Refresh uses explicit uncached request and keeps season",
+      "pass": true
+    },
+    {
+      "name": "Refresh retains one edited row value",
+      "pass": true
+    },
+    {
+      "name": "Untouched row refreshes from latest scoped assists source",
+      "pass": true
+    },
+    {
+      "name": "Assists ranking takes live in separate read-only session",
+      "pass": true
+    },
+    {
+      "name": "Fixture exposes sourced player match statistics",
+      "pass": true
+    },
+    {
+      "name": "Expanded lineup player reveals metric rows",
+      "pass": true
+    },
+    {
+      "name": "Lineup player opens correct provider profile",
+      "pass": true
+    },
+    {
+      "name": "Broken portrait stays producer-only and current program survives",
+      "pass": true
+    },
+    {
+      "name": "Valid prepared graphic replaces previous frame on separate output",
+      "pass": true
+    },
+    {
+      "name": "Revoked output blanks without retrying 401 in a loop",
+      "pass": true
+    },
+    {
+      "name": "No browser runtime errors",
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "signIn": {
+    "status": 200,
+    "elapsedMs": 227
+  },
+  "leaderboard": {
+    "category": "Assists",
+    "rowCount": 50,
+    "overriddenSubjectId": "espn:player:238262",
+    "overriddenValue": "0",
+    "untouchedSubjectId": "espn:player:132659",
+    "untouchedValue": 4,
+    "latestSourceValue": 4,
+    "freshRetrievedAt": "2026-11-13T00:22:40.654Z",
+    "requestedSeason": "2026"
+  },
+  "lineup": {
+    "matchId": "401879244",
+    "playerId": "291609",
+    "playerName": "Bart Verbruggen",
+    "statisticCount": 14,
+    "source": {
+      "provider": "espn",
+      "sourceUrl": "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/summary?event=401879244",
+      "retrievedAt": "2026-11-13T00:22:44.133Z",
+      "competition": "eng.1",
+      "season": 2026,
+      "scope": "match"
+    }
+  },
+  "outputSwitchMs": [
+    110.10000000149012,
+    57.900000005960464
+  ],
+  "revocation": {
+    "unauthorizedResponsesAtSettle": 1,
+    "unauthorizedResponsesAfterAdditional3500ms": 1,
+    "requests": [
+      {
+        "at": 1794529367287,
+        "path": "/api/program"
+      }
+    ]
+  },
+  "programActionsFromTest": [
+    "unfreeze",
+    "freeze",
+    "take",
+    "take"
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "verifiedAt": "2026-11-13T00:23:35.835Z",
+  "url": "https://tgiq-football-database.vercel.app",
+  "episodeId": "eda17ace-0ada-4a3d-a7f5-c86d41e5f83d",
+  "episodeName": "TGIQ · Review rundown",
+  "items": [
+    {
+      "title": "Bukayo Saka",
+      "template": "profile-player",
+      "scope": {
+        "kind": "player",
+        "competition": "eng.1",
+        "season": 2026,
+        "id": "280555",
+        "teamId": "359"
+      }
+    },
+    {
+      "title": "Vinícius Júnior",
+      "template": "profile-player",
+      "scope": {
+        "kind": "player",
+        "competition": "esp.1",
+        "season": 2026,
+        "id": "252107",
+        "teamId": "86"
+      }
+    },
+    {
+      "title": "Brighton v Brentford",
+      "template": "scoreboard-result",
+      "scope": {
+        "kind": "match",
+        "competition": "eng.1",
+        "season": 2026,
+        "id": "401879244"
+      }
+    }
+  ],
+  "outputCleared": true,
+  "frozen": true,
+  "notes": "Unmodified provider snapshots, no test zero/financial/example records. Build verification episodes archived, not deleted."
+}

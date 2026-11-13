@@ -14,7 +14,7 @@
 - [x] Durable episodes, media, server program state and access control.
 - [x] Failure, data correctness, browser workflows and visual verification.
 - [x] Type check, lint, tests and production build.
-- [ ] Repository delivery and deployment status recorded.
+- [x] Repository delivery and deployment status recorded.
 
 ## Infrastructure
 - Vercel CLI storage discovery attempted; CLI required account login before discovery. Connected Vercel plugin can list projects but no provisioned TGIQ database/storage was found. No paid service purchased.
@@ -59,3 +59,18 @@
 - Photos, full histories, advanced metrics, contracts and manager data are unavailable where the verified source lacks reliable content. Financial/ownership/editorial content is manually sourced and preflighted; no demo records substitute for failures.
 - An already open output retains its approved frame during failures. The local last-frame/media cache is best-effort; loading/reloading the app shell and remote control require a connection. Preflight is per device, so production should check the actual output browser. No fully offline remote control is claimed.
 - The Prisma database uses its explicit Free plan with100K monthly operations/2GB storage. State polling and number of open devices consume that allowance; account usage must be monitored. No new paid subscription was purchased. Vercel/Blob use the user's explicitly authorized paid workspace.
+
+## Recovery and final source
+
+- Recovery source `dce79d3870d5ec4dc37afd5e14c2c0c620733125` passed all64 tests, type checking, lint and production build. It also captures program intent/version before image preloading so a late older take cannot overwrite a newer producer action, and maps non-JSON platform failures to concise producer notices.
+- The intermediate Node24 deployment was READY but its first cold health request timed out at30seconds. This was treated as a failed live check. Same-database comparison isolated the Prisma pooled endpoint returning upstream failures while seven fresh direct connections succeeded (151–255ms). No database was replaced and no saved data was moved.
+- The recovery uses the working direct database URL, explicit schema migrations instead of10 setup queries on every cold request, and5/7/5/3second connection/query/statement/lock limits. Actual recovered cold public health was200JSON/readytrue at534ms, then53ms/51ms. The free database and dedicated private Blob store remain configured. `docs/POSTGRES_RECOVERY.json` and `docs/RECOVERY_DEPLOYMENT.json` contain exact checks.
+- Source setup/run documentation and `.env.example` were updated for explicit PostgreSQL migration and connection priority. Local SQLite still initializes automatically. API keys remain unnecessary for the verified ESPN workflows.
+
+## Final handover checks
+
+- Recovery commit `dce79d3870d5ec4dc37afd5e14c2c0c620733125`: GitHub CI succeeded, Vercel READY on Node24/fra1, runtime error/fatal/warning scan0 entries in the recorded window. `FINAL_RECOVERY_CHECKS.json` records identifiers and times.
+- Final deployed browser follow-up: **17/17 passed**, no runtime errors. Assists leaderboard uses actual50scoped rows; an editorial zero survives explicit uncached refresh while another row updates from source; available player match statistics expand; typing shortcuts do not take live; a broken portrait blocks the take and leaves program unchanged; corrected graphic takes in an independent output session; revocation blanks and stops unauthorized polling. `final-browser-results.json` and final screenshots. Live sign-in227ms; output initial110.1ms and prepared57.9ms.
+- Test episodes were archived without deleting them. `TGIQ · Review rundown` contains three unmodified actual ESPN snapshots: two player profiles and a scoreboard. The program was deliberately cleared and data frozen for handover. `REVIEW_RUNDOWN.json` records the exact subjects/scopes.
+- Production URL: https://tgiq-football-database.vercel.app . Credentials are stored privately in `.data/production-access.json` on this build computer; no sign-in password is committed or included in browser bundles.
+- Remaining limits are data coverage/editorial sourcing and the stated online requirements, not missing paid API credentials or incomplete deployment. Optional keyed providers are unconfigured. No fully offline or universal-history claim is made.

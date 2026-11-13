@@ -1,0 +1,31 @@
+{
+  "verifiedAt": "2026-11-13T00:22:23.282Z",
+  "deploymentId": "dpl_25dxXGiWxg4PQkhZaEUtcxeZ3tQr",
+  "commit": "dce79d3870d5ec4dc37afd5e14c2c0c620733125",
+  "nodeVersion": "24.x",
+  "publicUrl": "https://tgiq-football-database.vercel.app",
+  "checks": [
+    {
+      "attempt": 1,
+      "status": 200,
+      "ready": true,
+      "ms": 534,
+      "media": true
+    },
+    {
+      "attempt": 2,
+      "status": 200,
+      "ready": true,
+      "ms": 53,
+      "media": true
+    },
+    {
+      "attempt": 3,
+      "status": 200,
+      "ready": true,
+      "ms": 51,
+      "media": true
+    }
+  ],
+  "programUntouched": true
+}

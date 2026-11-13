@@ -1,0 +1,30 @@
+{
+  "observedAt": "2026-11-13T00:20:27Z",
+  "incident": "The first cold health request on the Node 24 deployment timed out at the platform's 30-second limit. Subsequent requests sometimes recovered.",
+  "isolatedCause": "The dedicated Prisma PostgreSQL pooled endpoint returned 'Failed to connect to upstream database. Please contact Prisma support if the problem persists.' while the direct endpoint for the same database succeeded.",
+  "pooledChecks": [
+    {"success": false, "ms": 124},
+    {"success": false, "ms": 115}
+  ],
+  "directChecks": [
+    {"success": true, "ms": 255},
+    {"success": true, "ms": 151},
+    {"success": true, "ms": 248},
+    {"success": true, "ms": 250},
+    {"success": true, "ms": 155},
+    {"success": true, "ms": 159},
+    {"success": true, "ms": 233}
+  ],
+  "productionDatabaseUrlMatchesVerifiedDirect": true,
+  "changes": [
+    "Prefer DATABASE_URL_UNPOOLED when explicitly configured, then DATABASE_URL; do not silently override a working direct URL with DATABASE_URL_POOLED.",
+    "Remove all PostgreSQL DDL and seed writes from cold request startup. Run migrations explicitly with db:migrate.",
+    "Set connection timeout 5 seconds, query timeout 7 seconds, statement timeout 5 seconds and lock timeout 3 seconds.",
+    "Read the applied schema version for health readiness; return JSON readiness status if storage cannot respond."
+  ],
+  "newInfrastructure": false,
+  "dataMoved": false,
+  "programMutated": false,
+  "localChecks": {"typecheck": "pass", "persistenceTests": "17 passed"},
+  "liveRecovery": "Pending deployment of the recovery patch; do not treat this local report as a live recovery claim."
+}
