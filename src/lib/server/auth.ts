@@ -4,8 +4,9 @@ import { HttpError } from './http';
 
 export const SESSION_COOKIE = 'tgiq_producer';
 const lifetimeSeconds = 12 * 60 * 60;
-export function authConfigured() { return Boolean(process.env.PRODUCER_PASSWORD_HASH && process.env.SESSION_SECRET && process.env.SESSION_SECRET.length >= 32); }
-function secret() { if (!authConfigured()) throw new HttpError(503, 'Set producer access credentials. Run npm run setup:local for local use.'); return process.env.SESSION_SECRET!; }
+export function producerAuthMode(): 'open' | 'password' { return process.env.PRODUCER_AUTH_MODE === 'open' ? 'open' : 'password'; }
+export function authConfigured() { return Boolean(process.env.SESSION_SECRET && process.env.SESSION_SECRET.length >= 32 && (producerAuthMode() === 'open' || process.env.PRODUCER_PASSWORD_HASH)); }
+function secret() { if (!authConfigured()) throw new HttpError(503, 'Configure producer session security. Run npm run setup:local for local use.'); return process.env.SESSION_SECRET!; }
 export function hashPassword(password: string, salt = randomBytes(16).toString('hex')) { return `${salt}:${scryptSync(password, salt, 64).toString('hex')}`; }
 export function checkPassword(password: string): boolean {
   const encoded = process.env.PRODUCER_PASSWORD_HASH ?? '';
@@ -28,11 +29,14 @@ export function validSession(token: string | undefined, now = Date.now()) {
 export function sessionFromRequest(request: Request) { const cookie = request.headers.get('cookie') ?? ''; return cookie.split(';').map(part => part.trim()).find(part => part.startsWith(`${SESSION_COOKIE}=`))?.slice(SESSION_COOKIE.length + 1); }
 export function isProducer(request: Request) { return validSession(sessionFromRequest(request)); }
 export function assertProducer(request: Request, mutation = false) {
-  if (!isProducer(request)) throw new HttpError(401, 'Producer sign-in required');
+  if (!isProducer(request)) throw new HttpError(401, producerAuthMode() === 'open' ? 'Producer session required' : 'Producer sign-in required');
   if (mutation) assertOrigin(request);
 }
 export function assertOrigin(request: Request) {
   if (request.headers.get('x-tgiq-csrf') !== '1') throw new HttpError(403, 'Missing request protection');
+  assertSessionOrigin(request);
+}
+export function assertSessionOrigin(request: Request) {
   const origin = request.headers.get('origin');
   if (origin && origin !== new URL(request.url).origin && origin !== process.env.APP_ORIGIN) throw new HttpError(403, 'Origin is not allowed');
 }

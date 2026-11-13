@@ -74,3 +74,9 @@
 - Test episodes were archived without deleting them. `TGIQ · Review rundown` contains three unmodified actual ESPN snapshots: two player profiles and a scoreboard. The program was deliberately cleared and data frozen for handover. `REVIEW_RUNDOWN.json` records the exact subjects/scopes.
 - Production URL: https://tgiq-football-database.vercel.app . Credentials are stored privately in `.data/production-access.json` on this build computer; no sign-in password is committed or included in browser bundles.
 - Remaining limits are data coverage/editorial sourcing and the stated online requirements, not missing paid API credentials or incomplete deployment. Optional keyed providers are unconfigured. No fully offline or universal-history claim is made.
+
+## User-requested password removal — 13 November 2026
+
+The user requested no password. Production now uses `PRODUCER_AUTH_MODE=open`: opening the producer page creates its signed browser session without a password form. Visiting the producer URL grants control in this intentional open mode. The output page does not bootstrap a producer session; its separate token remains read-only and cannot authorize producer mutations. CSRF/origin checks remain in place. Optional password mode is retained for deployments that explicitly enable it.
+
+Five added tests verify password-free session creation without a password hash, session reuse, password-free POST with request protection, cross-origin rejection, and that output tokens do not gain producer sessions or write access. Full checks: type check, lint, 69 tests and production build passed. Existing episode/program data is preserved.

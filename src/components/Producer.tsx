@@ -108,6 +108,7 @@ async function readScope(
 export function Producer() {
   const [session, setSession] = useState<boolean | null>(null);
   const [configured, setConfigured] = useState(true);
+  const [accessMode, setAccessMode] = useState<"open" | "password">("open");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
@@ -141,10 +142,15 @@ export function Producer() {
   useEffect(() => {
     if ("serviceWorker" in navigator)
       navigator.serviceWorker.register("/sw.js").catch(() => {});
-    api<{ authenticated: boolean; configured: boolean }>("/api/session")
+    api<{
+      authenticated: boolean;
+      configured: boolean;
+      mode?: "open" | "password";
+    }>("/api/session")
       .then((d) => {
         setSession(d.authenticated);
         setConfigured(d.configured);
+        setAccessMode(d.mode ?? "password");
       })
       .catch((e) => {
         setSession(false);
@@ -595,8 +601,16 @@ export function Producer() {
     return (
       <main className="login">
         <img className="brand-logo" src="/brand/tgiq-logo.png" alt="TGIQ" />
-        <h1>Production sign-in</h1>
-        {!configured ? (
+        <h1>
+          {accessMode === "password"
+            ? "Production sign-in"
+            : "Production unavailable"}
+        </h1>
+        {accessMode === "open" ? (
+          <button className="primary" onClick={() => location.reload()}>
+            Reconnect
+          </button>
+        ) : !configured ? (
           <div className="notice">
             Producer access is not configured. Complete the setup instructions
             to connect this workspace.
@@ -656,17 +670,19 @@ export function Producer() {
             <ExternalLink size={14} />
             Output link
           </button>
-          <button
-            className="subtle"
-            title="Sign out"
-            onClick={() =>
-              api("/api/session", "DELETE")
-                .then(() => setSession(false))
-                .catch(report)
-            }
-          >
-            <LogOut size={16} />
-          </button>
+          {accessMode === "password" && (
+            <button
+              className="subtle"
+              title="Sign out"
+              onClick={() =>
+                api("/api/session", "DELETE")
+                  .then(() => setSession(false))
+                  .catch(report)
+              }
+            >
+              <LogOut size={16} />
+            </button>
+          )}
         </div>
       </header>
       <div className="status-strip">

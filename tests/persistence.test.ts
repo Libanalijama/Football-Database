@@ -3,20 +3,21 @@ import { mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { closeDatabase, getDatabase, getCached, setCached } from '../src/lib/server/db';
-import { checkPassword, hashPassword, makeSession, validSession, assertOrigin, assertProducer } from '../src/lib/server/auth';
+import { checkPassword, hashPassword, makeSession, validSession, assertOrigin, assertProducer, authConfigured } from '../src/lib/server/auth';
 import { createEpisode, getEpisode, getProgram, listEpisodes, mutateProgram, rotateOutputToken, updateEpisode, validOutputToken, missingMedia } from '../src/lib/server/store';
 import { episodeSchema } from '../src/lib/server/models';
 import { createGraphic } from '../src/lib/graphics/registry';
 import { saveAsset, getAsset } from '../src/lib/server/assets';
 import { GET as readProgram, POST as writeProgram } from '../src/app/api/program/route';
-import { POST as login } from '../src/app/api/session/route';
+import { GET as readSession, POST as login } from '../src/app/api/session/route';
 import { POST as importEpisode } from '../src/app/api/episodes/route';
 
 const temporary = mkdtempSync(join(tmpdir(), 'tgiq-persistence-'));
 let priorEnvironment: NodeJS.ProcessEnv;
 beforeAll(() => {
   priorEnvironment = { ...process.env };
-  delete process.env.DATABASE_URL; delete process.env.VERCEL;
+  delete process.env.DATABASE_URL; delete process.env.DATABASE_URL_UNPOOLED; delete process.env.DATABASE_URL_POOLED; delete process.env.VERCEL;
+  process.env.PRODUCER_AUTH_MODE = 'password';
   process.env.TGIQ_SQLITE_PATH = join(temporary, 'test.sqlite');
   process.env.PRODUCER_PASSWORD_HASH = hashPassword('correct test password');
   process.env.SESSION_SECRET = 'a'.repeat(64);
@@ -146,4 +147,42 @@ describe('HTTP access and media boundaries', () => {
     const file = new File(['This is not a PNG picture'], 'identity.png', { type: 'image/png' });
     await expect(saveAsset(file, {})).rejects.toMatchObject({ status: 400 });
   });
+});
+
+
+describe('passwordless producer sessions', () => {
+  async function openMode<T>(callback: () => Promise<T>) {
+    const mode = process.env.PRODUCER_AUTH_MODE; const password = process.env.PRODUCER_PASSWORD_HASH;
+    process.env.PRODUCER_AUTH_MODE = 'open'; delete process.env.PRODUCER_PASSWORD_HASH;
+    try { return await callback(); } finally { process.env.PRODUCER_AUTH_MODE = mode; if(password) process.env.PRODUCER_PASSWORD_HASH = password; }
+  }
+  it('opens the studio without a password and issues a signed protected cookie', async () => openMode(async () => {
+    expect(authConfigured()).toBe(true);
+    const response = await readSession(new Request('https://studio.test/api/session'));
+    expect(await response.json()).toEqual({authenticated:true,configured:true,mode:'open'});
+    const cookie=response.headers.get('set-cookie')!;
+    expect(cookie).toContain('HttpOnly'); expect(cookie).toContain('SameSite=Strict'); expect(cookie).toContain('Secure');
+    const token=cookie.split(';')[0].split('=')[1]; expect(validSession(token)).toBe(true);
+  }));
+  it('keeps a producer cookie required until the studio session is opened', async () => openMode(async () => {
+    const before=await readProgram(new Request('https://studio.test/api/program')); expect(before.status).toBe(401); expect(before.headers.get('set-cookie')).toBeNull();
+    const session=await readSession(new Request('https://studio.test/api/session')); const cookie=session.headers.get('set-cookie')!.split(';')[0];
+    const after=await readProgram(new Request('https://studio.test/api/program',{headers:{cookie}})); expect(after.status).toBe(200);
+    const reload=await readSession(new Request('https://studio.test/api/session',{headers:{cookie}})); expect((await reload.json()).authenticated).toBe(true); expect(reload.headers.get('set-cookie')).toBeNull();
+  }));
+  it('never turns a read-only output token into producer access', async () => openMode(async () => {
+    const token=await rotateOutputToken(); const state=await getProgram();
+    const read=await readProgram(new Request(`https://studio.test/api/program?token=${token}`)); expect(read.status).toBe(200); expect(read.headers.get('set-cookie')).toBeNull();
+    const write=await writeProgram(new Request(`https://studio.test/api/program?token=${token}`,{method:'POST',headers:{'x-tgiq-csrf':'1'},body:JSON.stringify({action:'clear',expectedVersion:state.version})})); expect(write.status).toBe(401); expect(await getProgram()).toEqual(state);
+  }));
+  it('retains origin and CSRF protection with an automatic producer cookie', async () => openMode(async () => {
+    const blocked=await readSession(new Request('https://studio.test/api/session',{headers:{origin:'https://outside.test'}})); expect(blocked.status).toBe(403); expect(blocked.headers.get('set-cookie')).toBeNull();
+    const session=await readSession(new Request('https://studio.test/api/session')); const cookie=session.headers.get('set-cookie')!.split(';')[0];const state=await getProgram();
+    const write=await writeProgram(new Request('https://studio.test/api/program',{method:'POST',headers:{cookie},body:JSON.stringify({action:'clear',expectedVersion:state.version})}));expect(write.status).toBe(403);expect(await getProgram()).toEqual(state);
+    const post=await login(new Request('https://studio.test/api/session',{method:'POST',headers:{'x-tgiq-csrf':'1',origin:'https://studio.test'}}));expect(post.status).toBe(200);expect((await post.json()).mode).toBe('open');
+  }));
+  it('still requires configured session signing instead of issuing unsigned cookies', async () => openMode(async () => {
+    const secret=process.env.SESSION_SECRET;delete process.env.SESSION_SECRET;
+    try { const response=await readSession(new Request('https://studio.test/api/session'));expect(await response.json()).toEqual({authenticated:false,configured:false,mode:'open'});expect(response.headers.get('set-cookie')).toBeNull(); } finally {process.env.SESSION_SECRET=secret;}
+  }));
 });
